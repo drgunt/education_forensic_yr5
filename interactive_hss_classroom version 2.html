@@ -1,0 +1,1712 @@
+<!DOCTYPE html>
+<html lang="th" class="h-full bg-slate-50">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HSS CareIT - Pastel Bright Interactive Hub</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        pastel: {
+                            50: '#f4fbf7',   /* Very soft mint bg */
+                            100: '#e8f7ee',  /* Soft pastel green */
+                            200: '#d0efe0',  /* Light mint border */
+                            300: '#a3e2c3',  /* Medium pastel green */
+                            600: '#3b9c6a',  /* Rich sage/emerald for text */
+                            700: '#2e7b52',  /* Dark sage */
+                            800: '#21593b',  /* Deep forest green */
+                            900: '#143825'
+                        },
+                        neutralSoft: {
+                            50: '#fafaf9',
+                            100: '#f5f5f4',
+                            800: '#292524',
+                            900: '#1c1917'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f4fbf7;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #c2edd6;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #a3e2c3;
+        }
+        .canvas-grid-pattern {
+            background-image: radial-gradient(#d0efe0 1.5px, transparent 1.5px);
+            background-size: 16px 16px;
+        }
+    </style>
+</head>
+<body class="h-full flex flex-col font-sans text-slate-700 antialiased overflow-hidden bg-pastel-50">
+
+    <!-- Top Navigation Header with Pastel Green Accent -->
+    <header class="bg-white border-b border-pastel-200 px-6 py-4 flex flex-col lg:flex-row justify-between items-center shrink-0 shadow-sm">
+        <div class="flex items-center space-x-4">
+            <div class="w-10 h-10 rounded-xl bg-pastel-100 border border-pastel-300 flex items-center justify-center text-pastel-600 shadow-sm">
+                <i class="fa-solid fa-laptop-medical text-lg"></i>
+            </div>
+            <div>
+                <h1 class="text-base sm:text-lg font-bold text-pastel-800 tracking-tight flex items-center gap-2">
+                    HSS-IT Interactive Learning Hub
+                    <span class="text-[10px] bg-pastel-200 text-pastel-700 px-2 py-0.5 rounded-full font-medium">Active Learning Edition</span>
+                </h1>
+                <p class="text-[11px] text-slate-500">วิทยาศาสตรระบบบริการสุขภาพ (Health System Science) • สารสนเทศทางคลินิกและการแพทย์</p>
+            </div>
+        </div>
+        <div class="flex items-center space-x-2.5 mt-3 lg:mt-0 bg-pastel-100/60 px-4 py-1.5 rounded-xl border border-pastel-200">
+            <span class="w-2 h-2 rounded-full bg-pastel-600 animate-pulse"></span>
+            <span class="text-xs text-pastel-800 font-medium">จำลองสถานะ: พร้อมทำการทดลองวิจัยเรียนรู้</span>
+        </div>
+    </header>
+
+    <!-- Main Workspace Container -->
+    <div class="flex-1 flex overflow-hidden flex-col md:flex-row">
+        
+        <!-- Sidebar Navigation -->
+        <aside class="w-full md:w-80 bg-white border-r border-pastel-100 flex flex-col shrink-0 overflow-y-auto">
+            <div class="p-4 border-b border-pastel-50 bg-pastel-50/50">
+                <span class="text-[11px] uppercase font-bold text-pastel-600 tracking-wider">เมนูโมดูลการเรียนรู้</span>
+            </div>
+            <nav class="p-3 space-y-1.5 flex-1" id="sidebar-nav">
+                <!-- Tab Button 0 -->
+                <button onclick="switchTab('intro')" id="btn-intro" class="tab-btn w-full flex items-center justify-between px-4 py-3 rounded-xl text-left text-sm font-semibold transition-all duration-150">
+                    <span class="flex items-center space-x-3">
+                        <i class="fa-solid fa-house-chimney text-pastel-600"></i>
+                        <span>บทนำและจุดประสงค์</span>
+                    </span>
+                    <i class="fa-solid fa-chevron-right text-[9px] opacity-40"></i>
+                </button>
+                
+                <!-- Tab Button 1 -->
+                <button onclick="switchTab('dicom')" id="btn-dicom" class="tab-btn w-full flex items-center justify-between px-4 py-3 rounded-xl text-left text-sm font-semibold transition-all duration-150">
+                    <span class="flex items-center space-x-3">
+                        <i class="fa-solid fa-server text-pastel-600"></i>
+                        <span>M1: มาตรฐานระบบและฐานข้อมูล</span>
+                    </span>
+                    <span class="text-[9px] bg-pastel-200 text-pastel-700 px-1.5 py-0.5 rounded font-medium">SQL/DICOM</span>
+                </button>
+
+                <!-- Tab Button 2 -->
+                <button onclick="switchTab('files43')" id="btn-files43" class="tab-btn w-full flex items-center justify-between px-4 py-3 rounded-xl text-left text-sm font-semibold transition-all duration-150">
+                    <span class="flex items-center space-x-3">
+                        <i class="fa-solid fa-folder-open text-pastel-600"></i>
+                        <span>M2: แฟ้มข้อมูลบริการสุขภาพ</span>
+                    </span>
+                    <span class="text-[9px] bg-pastel-200 text-pastel-700 px-1.5 py-0.5 rounded font-medium">MOPH Data</span>
+                </button>
+
+                <!-- Tab Button 3 -->
+                <button onclick="switchTab('coding')" id="btn-coding" class="tab-btn w-full flex items-center justify-between px-4 py-3 rounded-xl text-left text-sm font-semibold transition-all duration-150">
+                    <span class="flex items-center space-x-3">
+                        <i class="fa-solid fa-tags text-pastel-600"></i>
+                        <span>M3: รหัสวินิจฉัย ICD/SNOMED</span>
+                    </span>
+                    <span class="text-[9px] bg-emerald-100 text-pastel-800 px-1.5 py-0.5 rounded font-bold">ICD-11 Added</span>
+                </button>
+
+                <!-- Tab Button 4 -->
+                <button onclick="switchTab('security')" id="btn-security" class="tab-btn w-full flex items-center justify-between px-4 py-3 rounded-xl text-left text-sm font-semibold transition-all duration-150">
+                    <span class="flex items-center space-x-3">
+                        <i class="fa-solid fa-shield-halved text-pastel-600"></i>
+                        <span>M4: Cyber Security Lab</span>
+                    </span>
+                    <span class="text-[9px] bg-red-100 text-red-700 px-1.5 py-0.5 rounded font-bold">10 ภัยคุกคาม</span>
+                </button>
+
+                <!-- Tab Button 5 -->
+                <button onclick="switchTab('innovation')" id="btn-innovation" class="tab-btn w-full flex items-center justify-between px-4 py-3 rounded-xl text-left text-sm font-semibold transition-all duration-150">
+                    <span class="flex items-center space-x-3">
+                        <i class="fa-solid fa-sparkles text-pastel-600"></i>
+                        <span>M5: นวัตกรรมคลินิกยุคใหม่</span>
+                    </span>
+                    <span class="text-[9px] bg-pastel-200 text-pastel-700 px-1.5 py-0.5 rounded font-medium">CDSS / AI</span>
+                </button>
+            </nav>
+            <div class="p-4 border-t border-pastel-100 text-[10px] text-slate-400 bg-pastel-50/20 leading-relaxed">
+                <span>คุ้มครองสิทธิและความปลอดภัยข้อมูลสุขภาพตามกรอบจริยธรรมแพทย์ และ พ.ร.บ. คุ้มครองข้อมูลส่วนบุคคล (PDPA)</span>
+            </div>
+        </aside>
+
+        <!-- Dynamic Portal View Area -->
+        <main class="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 flex flex-col bg-white" id="view-portal">
+            
+            <!-- Intro View -->
+            <section id="tab-intro" class="tab-content hidden space-y-6">
+                <div class="bg-gradient-to-br from-pastel-100 to-pastel-50 p-6 sm:p-8 rounded-2xl border border-pastel-200 shadow-sm relative overflow-hidden">
+                    <div class="absolute -right-6 -bottom-6 opacity-10 text-8xl text-pastel-600">
+                        <i class="fa-solid fa-graduation-cap"></i>
+                    </div>
+                    <span class="text-xs font-bold text-pastel-700 uppercase tracking-widest bg-white px-3 py-1 rounded-full border border-pastel-200">HSS Learning Companion</span>
+                    <h2 class="text-2xl sm:text-3xl font-bold text-pastel-800 mt-3 mb-2">เทคโนโลยีสารสนเทศสุขภาพเชิงโต้ตอบ</h2>
+                    <p class="text-slate-600 max-w-3xl text-xs sm:text-sm leading-relaxed">
+                        ยินดีต้อนรับสู่นวัตกรรมสื่อการสอนจำลองสถานะสารสนเทศทางการแพทย์แบบสลับโหมดพาสเทลสดใส แอปพลิเคชันนี้ออกแบบมาเพื่อให้นักศึกษาแพทย์สามารถทดสอบเขียนคำสั่งฐานข้อมูล เรียนรู้วงจรสัญจรระบบรับส่งข้อมูล ตลอดจนจำลองการเฝ้าระวังภัยพิบัติทางไซเบอร์ในโรงพยาบาลอย่างเป็นรูปธรรม
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div class="bg-white rounded-xl p-5 border border-pastel-200 space-y-3 shadow-sm">
+                        <h3 class="text-sm font-bold text-pastel-800 flex items-center gap-2">
+                            <i class="fa-solid fa-circle-check text-pastel-600"></i> สิ่งที่เรามุ่งหวังให้เรียนรู้
+                        </h3>
+                        <ul class="space-y-2.5 text-xs text-slate-500">
+                            <li class="flex gap-2">
+                                <span class="text-pastel-600 font-bold">1.</span> 
+                                <span>เข้าใจโครงสร้าง SQL ฐานข้อมูล, DICOM Metadata, มาตรฐาน HL7 v2 และระบบแลกเปลี่ยน FHIR API ยุคใหม่</span>
+                            </li>
+                            <li class="flex gap-2">
+                                <span class="text-pastel-600 font-bold">2.</span> 
+                                <span>ศึกษาวิเคราะห์ชุดข้อมูลมาตรฐานแฟ้มบริการสุขภาพ กระทรวงสาธารณสุข สำหรับระบบเฝ้าระวังโรคและการจัดสรรงบหลักประกัน</span>
+                            </li>
+                            <li class="flex gap-2">
+                                <span class="text-pastel-600 font-bold">3.</span> 
+                                <span>เปรียบเทียบคำวินิจฉัยโรคละเอียดสูงข้ามแพลตฟอร์มด้วยรหัส ICD-10, รหัสใหม่ ICD-11 และ SNOMED CT</span>
+                            </li>
+                            <li class="flex gap-2">
+                                <span class="text-pastel-600 font-bold">4.</span> 
+                                <span>สัมผัสประสบการณ์ตั้งรับความมั่นคงปลอดภัยไซเบอร์และนวัตกรรมสนับสนุนการตัดสินใจรักษา (CDSS & AI)</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="bg-pastel-50/50 rounded-xl p-5 border border-pastel-200 flex flex-col justify-between shadow-sm">
+                        <div>
+                            <h3 class="text-sm font-bold text-pastel-800 flex items-center gap-2">
+                                <i class="fa-solid fa-circle-play text-pastel-600"></i> เริ่มต้นอย่างไร?
+                            </h3>
+                            <p class="text-xs text-slate-500 mt-2 leading-relaxed">
+                                ท่านสามารถเลือกเปลี่ยนหน้าเมนูด้านซ้ายเพื่อเริ่มต้นสืบค้นเนื้อหา โดยในแต่ละหน้าจะมี **ปุ่มควบคุมแบบตอบโต้ (Interactions)** เช่น การสั่ง Run SQL, ปรับค่าฟิล์มรังสี, การจำลองยิงไวรัส หรือจำลองตรวจจับหัวใจเต้นวิกฤต ซึ่งจะตอบสนองในเวลานั้นทันที
+                            </p>
+                        </div>
+                        <div class="mt-4 pt-4 border-t border-pastel-200 text-[10px] text-slate-400">
+                            พัฒนาขึ้นเพื่อเป็นคลังความรู้สำหรับประกอบหลักสูตรแพทยศาสตร์ดึกดำบรรพ์ถึงยุคดิจิทัล
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Module 1: SQL -> DICOM -> HL7 -> FHIR -->
+            <section id="tab-dicom" class="tab-content hidden space-y-6">
+                <!-- Subtab Navigation -->
+                <div class="bg-pastel-50 p-1.5 rounded-xl border border-pastel-200 flex flex-wrap gap-1">
+                    <button onclick="switchM1Sub('sql-his')" id="m1-btn-sql-his" class="m1-sub-btn px-4 py-2 rounded-lg text-xs font-bold transition-all bg-white text-pastel-700 shadow-sm border border-pastel-200">1. SQL in HIS Database</button>
+                    <button onclick="switchM1Sub('dicom-core')" id="m1-btn-dicom-core" class="m1-sub-btn px-4 py-2 rounded-lg text-xs font-bold transition-all text-slate-500 hover:text-pastel-700">2. DICOM Standard</button>
+                    <button onclick="switchM1Sub('hl7-v2')" id="m1-btn-hl7-v2" class="m1-sub-btn px-4 py-2 rounded-lg text-xs font-bold transition-all text-slate-500 hover:text-pastel-700">3. HL7 v2 Protocol</button>
+                    <button onclick="switchM1Sub('fhir-api')" id="m1-btn-fhir-api" class="m1-sub-btn px-4 py-2 rounded-lg text-xs font-bold transition-all text-slate-500 hover:text-pastel-700">4. FHIR API Standard</button>
+                </div>
+
+                <!-- Sub M1: SQL in HIS -->
+                <div id="m1-sql-his" class="m1-sub-content space-y-4">
+                    <div class="bg-white rounded-xl p-5 border border-pastel-200 space-y-4 shadow-sm">
+                        <div class="flex items-center space-x-3">
+                            <i class="fa-solid fa-database text-pastel-600 text-lg"></i>
+                            <div>
+                                <h3 class="text-base font-bold text-pastel-800">การจัดการระบบฐานข้อมูลเชิงสัมพันธ์ใน HIS ด้วยภาษา SQL</h3>
+                                <p class="text-xs text-slate-500">ระบบสารสนเทศโรงพยาบาล (Hospital Information System) พึ่งพิงการสืบค้นผ่านโครงสร้างภาษาคิวรี่เพื่อความแม่นยำรวดเร็ว</p>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                            <!-- Left Schema structure -->
+                            <div class="lg:col-span-4 bg-pastel-50/50 p-4 rounded-xl border border-pastel-200 text-xs space-y-3">
+                                <span class="text-pastel-700 font-bold block mb-1"><i class="fa-solid fa-circle-nodes"></i> โครงสร้างสารสนเทศจำลอง (Mock Schema)</span>
+                                <div class="space-y-2 font-mono text-[10px]">
+                                    <div class="bg-white p-2.5 rounded-lg border border-pastel-200">
+                                        <span class="text-pastel-700 block font-bold mb-1">Table: PATIENTS</span>
+                                        <ul class="list-disc list-inside text-slate-500 space-y-0.5">
+                                            <li>HN (VARCHAR) - PK</li>
+                                            <li>NAME (VARCHAR)</li>
+                                            <li>AGE (INTEGER)</li>
+                                            <li>GENDER (VARCHAR)</li>
+                                        </ul>
+                                    </div>
+                                    <div class="bg-white p-2.5 rounded-lg border border-pastel-200">
+                                        <span class="text-pastel-700 block font-bold mb-1">Table: OUTPATIENT_VISITS</span>
+                                        <ul class="list-disc list-inside text-slate-500 space-y-0.5">
+                                            <li>VISIT_ID (VARCHAR) - PK</li>
+                                            <li>HN (VARCHAR) - FK</li>
+                                            <li>DIAG_ICD10 (VARCHAR)</li>
+                                            <li>COST (DECIMAL)</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Right Live SQL query executor -->
+                            <div class="lg:col-span-8 bg-pastel-50/30 p-4 rounded-xl border border-pastel-200 flex flex-col justify-between">
+                                <div>
+                                    <span class="text-xs font-bold text-slate-700 block mb-2"><i class="fa-solid fa-code text-pastel-600 mr-2"></i> หน้าต่างจำลองการสั่งรันประมวลผลคำสั่ง SQL</span>
+                                    <div class="space-y-2">
+                                        <div class="flex flex-wrap gap-1.5">
+                                            <button onclick="setSQLInput('SELECT * FROM PATIENTS')" class="bg-white hover:bg-pastel-100 border border-pastel-200 text-pastel-800 px-2.5 py-1 rounded-lg text-[10px] font-semibold transition">1. ดูตารางผู้ป่วยทั้งหมด</button>
+                                            <button onclick="setSQLInput('SELECT * FROM PATIENTS WHERE AGE > 60')" class="bg-white hover:bg-pastel-100 border border-pastel-200 text-pastel-800 px-2.5 py-1 rounded-lg text-[10px] font-semibold transition">2. ค้นหาผู้ป่วยสูงอายุ (>60)</button>
+                                            <button onclick="setSQLInput('SELECT HN, DIAG_ICD10, COST FROM OUTPATIENT_VISITS WHERE COST > 1000')" class="bg-white hover:bg-pastel-100 border border-pastel-200 text-pastel-800 px-2.5 py-1 rounded-lg text-[10px] font-semibold transition">3. ค้นหาราคาตรวจรักษาสูง (>1000)</button>
+                                        </div>
+                                        <textarea id="sql-input" class="w-full h-16 bg-white border border-pastel-200 rounded-lg p-3 text-xs font-mono text-slate-700 focus:outline-none focus:ring-1 focus:ring-pastel-300">SELECT * FROM PATIENTS WHERE AGE > 60</textarea>
+                                    </div>
+                                    <button onclick="runSQLQuery()" class="mt-2 w-full py-2 bg-pastel-600 hover:bg-pastel-700 text-white font-bold text-xs rounded-lg transition-all shadow-sm">ประมวลผลคำสั่ง SQL (Run Query)</button>
+                                </div>
+
+                                <div class="mt-4 pt-4 border-t border-pastel-200">
+                                    <span class="text-xs font-bold text-slate-600 block mb-2"><i class="fa-solid fa-table"></i> ตารางแสดงผลลัพธ์คิวรี่ (QueryResult Set)</span>
+                                    <div class="overflow-x-auto bg-white rounded-lg border border-pastel-100 p-2" id="sql-result-table-box">
+                                        <!-- Default Table visual -->
+                                        <table class="min-w-full text-[10px] font-mono border-collapse text-left">
+                                            <thead>
+                                                <tr class="bg-pastel-50 text-pastel-700 font-bold border-b border-pastel-200">
+                                                    <th class="p-2">HN</th>
+                                                    <th class="p-2">NAME</th>
+                                                    <th class="p-2">AGE</th>
+                                                    <th class="p-2">GENDER</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="divide-y divide-pastel-100 text-slate-600">
+                                                <tr>
+                                                    <td class="p-2">HN6942011</td>
+                                                    <td class="p-2">นายศิริสุข สดใส</td>
+                                                    <td class="p-2">67</td>
+                                                    <td class="p-2">M</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="p-2">HN6942033</td>
+                                                    <td class="p-2">นางอุ่นใจ มีสุข</td>
+                                                    <td class="p-2">72</td>
+                                                    <td class="p-2">F</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sub M1: DICOM Core -->
+                <div id="m1-dicom-core" class="m1-sub-content hidden space-y-4">
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                        <div class="lg:col-span-7 bg-white rounded-xl p-5 border border-pastel-200 space-y-4 shadow-sm">
+                            <h3 class="text-base font-bold text-pastel-800 flex items-center gap-2"><i class="fa-solid fa-circle-nodes text-pastel-600"></i> มาตรฐานภาพถ่ายรังสีและสัญจรสื่อสาร (DICOM)</h3>
+                            <p class="text-xs text-slate-500 leading-relaxed">
+                                มาตรฐาน **DICOM (Digital Imaging and Communications in Medicine)** ควบคุมความสมดุลด้านรังสีวิทยา โดยรับรองว่าไฟล์ฟิล์มสแกนจะถูกผูกโยงเข้ากับ Metadata ประวัติผู้ป่วยอย่างแน่นหนาเพื่อป้องกันความคลาดเคลื่อนทางการวินิจฉัยโรค
+                            </p>
+                            <div class="p-3.5 bg-pastel-50 rounded-xl border border-pastel-200 text-xs text-slate-600 space-y-1">
+                                <span class="text-pastel-800 font-bold block">ส่วนประกอบภายในโครงสร้างไฟล์:</span>
+                                <ul class="list-disc list-inside space-y-1 text-slate-500 text-[11px]">
+                                    <li><strong>File Preamble:</strong> 128 ไบต์แรกสำหรับซอฟต์แวร์เครื่องมือวิเคราะห์เปิดหน้าต่างสแกน</li>
+                                    <li><strong>DICOM Prefix:</strong> สตริงเฉพาะเจาะจง 4 ไบต์ บรรจุข้อความ <code class="font-mono text-pastel-800 font-bold bg-white px-1 rounded">"DICM"</code></li>
+                                    <li><strong>Header Tags:</strong> รหัสมาตรฐานคีย์คู่ เช่น <code class="text-pastel-700 font-mono">(0010,0010)</code> อ้างอิงชื่อ-สกุล และ <code class="text-pastel-700 font-mono">(0008,0060)</code> อ้างอิงประเภทเครื่องตรวจวัด</li>
+                                </ul>
+                            </div>
+
+                            <!-- Metadata tag explorer simulation -->
+                            <div class="bg-pastel-50/50 p-4 rounded-xl border border-pastel-200">
+                                <span class="text-xs font-bold text-slate-700 block mb-2"><i class="fa-solid fa-code text-pastel-600 mr-2"></i> จำลองการอ่านค่าพาสเวิร์ดสัญจรตัวแปร (Header Tags Decoder)</span>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[10px] font-mono">
+                                    <div class="p-2 bg-white rounded-lg border border-pastel-100 flex justify-between">
+                                        <span class="text-slate-500">(0010,0010) Patient Name:</span>
+                                        <span class="text-pastel-700 font-bold">SOMCHAI JEEDEE</span>
+                                    </div>
+                                    <div class="p-2 bg-white rounded-lg border border-pastel-100 flex justify-between">
+                                        <span class="text-slate-500">(0010,0020) Patient HN:</span>
+                                        <span class="text-pastel-700 font-bold">69-420-59</span>
+                                    </div>
+                                    <div class="p-2 bg-white rounded-lg border border-pastel-100 flex justify-between">
+                                        <span class="text-slate-500">(0008,0060) Modality:</span>
+                                        <span class="text-pastel-700 font-bold">CT (Chest)</span>
+                                    </div>
+                                    <div class="p-2 bg-white rounded-lg border border-pastel-100 flex justify-between">
+                                        <span class="text-slate-500">(0018,0015) Body Part:</span>
+                                        <span class="text-pastel-700 font-bold">CHEST</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Right interactive DICOM simulator -->
+                        <div class="lg:col-span-5 bg-white rounded-xl p-5 border border-pastel-200 flex flex-col justify-between shadow-sm">
+                            <div>
+                                <span class="text-xs font-bold text-pastel-600 block mb-1">DICOM Web-Viewer Simulator</span>
+                                <h4 class="text-sm font-bold text-slate-800 mb-3">ปรับแก้สเกลสีแบบเรียลไทม์ (Windowing Width & Level)</h4>
+                                
+                                <div class="w-full aspect-square bg-slate-900 rounded-xl border border-pastel-200 relative overflow-hidden flex items-center justify-center canvas-grid-pattern">
+                                    <!-- Inner chest graphic simulation (SVG) -->
+                                    <div id="dicom-img-mock" class="w-48 h-48 rounded-full border-4 border-slate-700 bg-slate-800 flex items-center justify-center relative transition-all duration-100" style="filter: brightness(1) contrast(1);">
+                                        <svg class="absolute w-36 h-36 text-white opacity-40" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2">
+                                            <rect x="47" y="10" width="6" height="80" rx="2" fill="currentColor"/>
+                                            <path d="M45,20 C15,15 10,40 45,50" />
+                                            <path d="M45,35 C10,30 5,60 45,70" />
+                                            <path d="M45,50 C5,45 2,75 45,85" />
+                                            <path d="M55,20 C85,15 90,40 55,50" />
+                                            <path d="M55,35 C90,30 95,60 55,70" />
+                                            <path d="M55,50 C95,45 98,75 55,85" />
+                                            <ellipse cx="65" cy="55" rx="12" ry="16" fill="currentColor" class="opacity-30" />
+                                        </svg>
+                                        
+                                        <div class="absolute inset-0 flex flex-col justify-between p-3 text-[9px] text-green-300 font-mono">
+                                            <div class="flex justify-between">
+                                                <span>PAT: SOMCHAI JEEDEE</span>
+                                                <span>HN: 6942059</span>
+                                            </div>
+                                            <div class="flex justify-between">
+                                                <span>CT Scan (512x512)</span>
+                                                <span id="dicom-preset-txt">Preset: Custom</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="space-y-3 mt-4">
+                                    <div>
+                                        <div class="flex justify-between text-xs mb-1 text-slate-500">
+                                            <span>Window Level (ความสว่างศูนย์กลาง):</span>
+                                            <span class="text-pastel-700 font-mono font-bold" id="m1-val-lvl">100%</span>
+                                        </div>
+                                        <input type="range" id="m1-slide-lvl" min="30" max="200" value="100" class="w-full accent-pastel-600" oninput="updateDicomM1()">
+                                    </div>
+                                    <div>
+                                        <div class="flex justify-between text-xs mb-1 text-slate-500">
+                                            <span>Window Width (ความเข้มคอนทราสต์):</span>
+                                            <span class="text-pastel-700 font-mono font-bold" id="m1-val-wdth">100%</span>
+                                        </div>
+                                        <input type="range" id="m1-slide-wdth" min="30" max="250" value="100" class="w-full accent-pastel-600" oninput="updateDicomM1()">
+                                    </div>
+                                </div>
+
+                                <div class="grid grid-cols-2 gap-2 mt-4">
+                                    <button onclick="setDicomPreset('bone')" class="py-2 bg-pastel-100 hover:bg-pastel-200 rounded-lg text-xs font-bold text-pastel-800 transition">Bone Window (กระดูก)</button>
+                                    <button onclick="setDicomPreset('lung')" class="py-2 bg-pastel-100 hover:bg-pastel-200 rounded-lg text-xs font-bold text-pastel-800 transition">Lung Window (เนื้อปอด)</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sub M1: HL7 v2 -->
+                <div id="m1-hl7-v2" class="m1-sub-content hidden space-y-4">
+                    <div class="bg-white rounded-xl p-5 border border-pastel-200 space-y-4 shadow-sm">
+                        <div class="flex items-center space-x-3">
+                            <i class="fa-solid fa-code-branch text-pastel-600 text-lg"></i>
+                            <div>
+                                <h3 class="text-base font-bold text-pastel-800">มาตรฐานการรับส่งข้อความสัญจรทางคลินิก (HL7 v2 Protocol)</h3>
+                                <p class="text-xs text-slate-500">โปรโตคอลดั้งเดิมสำหรับการแลกเปลี่ยนข้อความแบบแยกส่วน (Segment-based Text Format) ที่ใช้กันอย่างแพร่หลายทั่วโลก</p>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                            <!-- HL7 interactive parser -->
+                            <div class="bg-pastel-50 p-4 rounded-xl border border-pastel-200 space-y-3">
+                                <span class="text-xs font-bold text-slate-600 block"><i class="fa-solid fa-hand-pointer text-pastel-600 mr-2"></i> คลิกบรรทัด Segment ด้านล่างเพื่อถอดรหัสข้อความจำลอง:</span>
+                                <div class="font-mono text-[10px] space-y-2 select-all">
+                                    <div onclick="decodeHL7('MSH')" class="p-2 bg-white rounded-lg border border-pastel-150 hover:bg-pastel-100 hover:border-pastel-300 transition cursor-pointer text-slate-700">MSH|^~\&|HIS|HOSPCODE_001|PACS|RADIOLOGY|20260529||ADT^A08|MSG001|P|2.4</div>
+                                    <div onclick="decodeHL7('PID')" class="p-2 bg-white rounded-lg border border-pastel-150 hover:bg-pastel-100 hover:border-pastel-300 transition cursor-pointer text-slate-700">PID|1||HN6942059||นายสมชาย ใจดี||19850529|M|||123 หมู่ 4 ต.ในเมือง จ.พิษณุโลก</div>
+                                    <div onclick="decodeHL7('PV1')" class="p-2 bg-white rounded-lg border border-pastel-150 hover:bg-pastel-100 hover:border-pastel-300 transition cursor-pointer text-slate-700">PV1|1|O|OPD_ROOM5|||||21405^นพ.กันต์^ทองแถม</div>
+                                    <div onclick="decodeHL7('OBX')" class="p-2 bg-white rounded-lg border border-pastel-150 hover:bg-pastel-100 hover:border-pastel-300 transition cursor-pointer text-slate-700">OBX|1|TX|DIAG_FINDINGS||พบเงาความทึบแสงผิดปกติที่ปอดขวาตอนล่าง||||||F</div>
+                                </div>
+                            </div>
+
+                            <!-- Explanation display -->
+                            <div class="bg-pastel-50/50 p-4 rounded-xl border border-pastel-200 flex flex-col justify-between">
+                                <div>
+                                    <span class="text-xs font-bold text-slate-700 block mb-2"><i class="fa-solid fa-circle-info text-pastel-600"></i> ผลลัพธ์การถอดรหัสข้อความ (Decoded HL7 Info)</span>
+                                    <div id="hl7-explanation" class="p-3 bg-white rounded-lg border border-pastel-150 text-xs text-slate-500 leading-relaxed min-h-[140px]">
+                                        กรุณาคลิกเลือก Segment รหัสด้านซ้ายมือ เพื่อดูโครงสร้างข้อมูลและการใช้งานในทางสารสนเทศสุขภาพอย่างละเอียด
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sub M1: FHIR API -->
+                <div id="m1-fhir-api" class="m1-sub-content hidden space-y-4">
+                    <div class="bg-white rounded-xl p-5 border border-pastel-200 space-y-4 shadow-sm">
+                        <div class="flex items-center space-x-3">
+                            <i class="fa-solid fa-fire-flame-curved text-pastel-600 text-lg"></i>
+                            <div>
+                                <h3 class="text-base font-bold text-pastel-800">การเชื่อมต่อผ่าน RESTful API ด้วยมาตรฐาน FHIR (JSON)</h3>
+                                <p class="text-xs text-slate-500">มาตรฐานใหม่สำหรับการทำงานร่วมกันที่พัฒนาขึ้นมาทดแทนข้อจำกัดเดิมของ HL7 v2</p>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                            <!-- JSON Visualizer -->
+                            <div class="bg-pastel-50 p-4 rounded-xl border border-pastel-200 space-y-2">
+                                <span class="text-xs font-bold text-slate-700 block"><i class="fa-solid fa-file-code text-pastel-600 mr-2"></i> ตัวอย่างโครงสร้างแฟ้มของทรัพยากรผู้ป่วย (FHIR Patient Resource JSON)</span>
+                                <pre class="font-mono text-[9px] text-pastel-800 bg-white p-3 rounded-lg border border-pastel-150 overflow-x-auto max-h-[180px]">
+{
+  "resourceType": "Patient",
+  "id": "pat-69420",
+  "active": true,
+  "identifier": [
+    { "system": "https://hospital.org/hn", "value": "HN6942059" }
+  ],
+  "name": [
+    { "use": "official", "family": "Jaidee", "given": ["Somchai"] }
+  ],
+  "gender": "male",
+  "birthDate": "1985-05-29"
+}</pre>
+                            </div>
+
+                            <!-- REST Client simulator -->
+                            <div class="bg-pastel-50/50 p-4 rounded-xl border border-pastel-200 flex flex-col justify-between">
+                                <div>
+                                    <span class="text-xs font-bold text-slate-700 block mb-2"><i class="fa-solid fa-paper-plane text-pastel-600 mr-1.5"></i> ทดสอบดึงข้อมูลผ่านระบบ API Client</span>
+                                    <div class="space-y-3">
+                                        <div class="flex">
+                                            <span class="bg-pastel-200 text-pastel-800 px-3 py-2 text-xs font-mono border border-pastel-300 rounded-l-lg">GET</span>
+                                            <input type="text" id="fhir-endpoint-input" class="flex-1 bg-white text-xs font-mono px-3 py-2 border-y border-r border-pastel-200 text-slate-600 focus:outline-none" value="https://api.hospital.go.th/fhir/v4/Patient/69420" readonly>
+                                            <button onclick="sendFHIRRequest()" class="bg-pastel-600 hover:bg-pastel-700 text-white px-4 py-2 text-xs font-bold rounded-r-lg transition shadow-sm">Send</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mt-4 pt-4 border-t border-pastel-200">
+                                    <span class="text-xs font-bold text-slate-600 block mb-1">Response จากเซิร์ฟเวอร์จำลอง:</span>
+                                    <div id="fhir-api-response" class="p-3 bg-white rounded-lg border border-pastel-150 font-mono text-[9px] text-pastel-700 min-h-[80px] max-h-[120px] overflow-y-auto">
+                                        ยังไม่มีการยิงคำสั่ง... กดปุ่ม Send ด้านบนเพื่อเริ่มจำลอง
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Module 2: MOPH Data Files -->
+            <section id="tab-files43" class="tab-content hidden space-y-6">
+                <div class="bg-white rounded-xl p-5 border border-pastel-200 space-y-4 shadow-sm">
+                    <div>
+                        <span class="text-xs font-bold text-pastel-700 uppercase tracking-widest block mb-1">Module 2</span>
+                        <h3 class="text-base sm:text-lg font-bold text-slate-800">ระบบแฟ้มข้อมูลมาตรฐานบริการสุขภาพ กระทรวงสาธารณสุข</h3>
+                        <p class="text-xs text-slate-500">โครงสร้างสัญจรรวบรวมข้อมูลสุขภาพระดับชาติเพื่อใช้ในการติดตามตัวชี้วัดสาธารณสุขและการพิจารณาจัดสรรงบประมาณ (สิทธิหลักประกันสุขภาพ UC)</p>
+                    </div>
+
+                    <!-- Category navigation + search -->
+                    <div class="flex flex-col lg:flex-row gap-4 items-center justify-between bg-pastel-50 p-4 rounded-xl border border-pastel-200">
+                        <div class="flex flex-wrap gap-1" id="m2-category-container">
+                            <button onclick="filter43Group('all')" class="m2-cat-btn px-3 py-1.5 rounded-lg bg-pastel-600 text-white text-xs font-bold transition">ทั้งหมด</button>
+                            <button onclick="filter43Group('basic')" class="m2-cat-btn px-3 py-1.5 rounded-lg bg-white border border-pastel-200 text-slate-600 text-xs font-bold hover:bg-pastel-50 transition">กลุ่มทะเบียนพื้นฐาน</button>
+                            <button onclick="filter43Group('prevention')" class="m2-cat-btn px-3 py-1.5 rounded-lg bg-white border border-pastel-200 text-slate-600 text-xs font-bold hover:bg-pastel-50 transition">กลุ่มส่งเสริม/ป้องกันโรค</button>
+                            <button onclick="filter43Group('treatment')" class="m2-cat-btn px-3 py-1.5 rounded-lg bg-white border border-pastel-200 text-slate-600 text-xs font-bold hover:bg-pastel-50 transition">กลุ่มรักษาพยาบาล</button>
+                            <button onclick="filter43Group('special')" class="m2-cat-btn px-3 py-1.5 rounded-lg bg-white border border-pastel-200 text-slate-600 text-xs font-bold hover:bg-pastel-50 transition">กลุ่มเฉพาะโรค/ติดตาม</button>
+                        </div>
+                        <div class="relative w-full lg:w-64">
+                            <input type="text" id="m2-search-input" placeholder="ค้นหาชื่อแฟ้ม เช่น PERSON, REFER..." class="w-full px-3.5 py-1.5 text-xs bg-white border border-pastel-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-pastel-300" onkeyup="search43Files()">
+                        </div>
+                    </div>
+
+                    <!-- Layout Grid for Standard Health Files -->
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-2.5 max-h-[220px] overflow-y-auto pr-2" id="m2-files-grid">
+                        <!-- Filled in via JS initialization -->
+                    </div>
+
+                    <!-- Interactive Schema Detail Container -->
+                    <div id="m2-detail-card" class="bg-pastel-50/40 p-5 rounded-xl border border-pastel-200 space-y-4 hidden">
+                        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b border-pastel-200 pb-3">
+                            <div>
+                                <span class="text-xs font-bold text-pastel-800 font-mono uppercase bg-pastel-200 px-2.5 py-1 rounded-lg border border-pastel-300" id="m2-detail-id">PERSON</span>
+                                <h4 class="text-sm sm:text-base font-bold text-slate-800 mt-2" id="m2-detail-title">ทะเบียนข้อมูลผู้รับบริการส่วนบุคคล</h4>
+                            </div>
+                            <span class="text-xs text-pastel-700 font-bold mt-2 sm:mt-0" id="m2-detail-cat">กลุ่มประชากร</span>
+                        </div>
+                        <p class="text-xs text-slate-600 leading-relaxed" id="m2-detail-desc"></p>
+
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                            <!-- Variables list table -->
+                            <div class="bg-white p-3.5 rounded-xl border border-pastel-200 space-y-2">
+                                <span class="text-xs font-bold text-slate-700 block"><i class="fa-solid fa-list-check text-pastel-600 mr-2"></i> โครงสร้างฟิลด์ข้อมูลสำคัญ (Schema Variables)</span>
+                                <div class="overflow-x-auto">
+                                    <table class="min-w-full text-[10px] font-mono border-collapse text-left">
+                                        <thead>
+                                            <tr class="bg-pastel-50 text-pastel-700 font-bold border-b border-pastel-200">
+                                                <th class="p-1.5">ชื่อตัวแปร</th>
+                                                <th class="p-1.5">ประเภท</th>
+                                                <th class="p-1.5">ขนาด</th>
+                                                <th class="p-1.5">ความหมายทางสาธารณสุข</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="divide-y divide-pastel-100 text-slate-600" id="m2-detail-table-body">
+                                            <!-- Injected via JS -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <!-- CSV Output Visualization -->
+                            <div class="bg-white p-3.5 rounded-xl border border-pastel-200 flex flex-col justify-between">
+                                <div>
+                                    <span class="text-xs font-bold text-slate-700 block mb-2"><i class="fa-solid fa-file-csv text-pastel-600 mr-2"></i> รูปแบบจำลองส่งออกจริงในแบบโครงสร้างคั่นด้วยไพป์ (Pipe Separated Export)</span>
+                                    <pre class="font-mono text-[9px] text-pastel-800 bg-pastel-50 p-3 rounded-lg border border-pastel-200 overflow-x-auto max-h-[110px]" id="m2-detail-csv"></pre>
+                                </div>
+                                <div class="text-[9px] text-slate-400 mt-2">
+                                    * หมายเหตุ: ข้อมูลเหล่านี้ได้รับการแปลงรูปพิกัดและการเข้าถึงให้ผ่านหลักเกณฑ์คุ้มครองสิทธิส่วนบุคคลของผู้รับบริการ
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Module 3: ICD-10 vs ICD-11 vs SNOMED CT -->
+            <section id="tab-coding" class="tab-content hidden space-y-6">
+                <div class="bg-white rounded-xl p-5 border border-pastel-200 space-y-5 shadow-sm">
+                    <div>
+                        <span class="text-xs font-bold text-pastel-700 uppercase tracking-widest block mb-1">Module 3</span>
+                        <h3 class="text-base sm:text-lg font-bold text-slate-800">การเปรียบเทียบมาตรฐานการให้รหัสโรคและศัพท์ทางการแพทย์ (ICD-10 vs ICD-11 vs SNOMED CT)</h3>
+                        <p class="text-xs text-slate-500">วิเคราะห์เปรียบเทียบแบบจำลองรหัสวินิจฉัยเชิงระบาดวิทยาเพื่อจัดสรรงบ (ICD-10/11) และคลังรหัสพยาธิวิทยาระดับคลินิก (SNOMED CT) ในกลุ่มเคสที่มีความซับซ้อน</p>
+                    </div>
+
+                    <!-- Clinical Case Selection Tool -->
+                    <div class="bg-pastel-50 p-4 rounded-xl border border-pastel-200 space-y-3">
+                        <label class="block text-xs font-bold text-pastel-800"><i class="fa-solid fa-stethoscope mr-2"></i> เลือกกรณีศึกษาทางคลินิกเพื่อวิเคราะห์การเปรียบเทียบรหัส:</label>
+                        <select id="m3-disease-select" class="w-full text-xs p-2.5 bg-white border border-pastel-300 text-slate-700 rounded-lg focus:outline-none focus:ring-1 focus:ring-pastel-300" onchange="runCodingCompare()">
+                            <option value="fracture-femur">1. กระดูกต้นขาขวาหัก (Fracture of shaft of right femur)</option>
+                            <option value="breast-cancer">2. มะเร็งเต้านมส่วนนอกด้านบนข้างซ้าย (Malignant neoplasm of upper-outer quadrant of left breast)</option>
+                            <option value="drowning">3. การจมน้ำเสียชีวิตหรือหมดสติ (Drowning and nonfatal submersion)</option>
+                            <option value="hanging">4. การผูกคอทำร้ายตัวเอง (Intentional self-harm by hanging)</option>
+                            <option value="mi">5. กล้ามเนื้อหัวใจตายเฉียบพลันผนังหน้า (Acute anterior myocardial infarction)</option>
+                            <option value="car-accident">6. อุบัติเหตุรถยนต์ชนกันในฐานะผู้โดยสารได้รับบาดเจ็บ (Car accident injuring occupant)</option>
+                            <option value="gunshot">7. แผลถูกยิงด้วยปืนพกบริเวณหน้าท้อง (Gunshot wound to abdomen by handgun)</option>
+                        </select>
+                    </div>
+
+                    <!-- Coding results block -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <!-- ICD-10 Card -->
+                        <div class="bg-pastel-50/30 p-4 rounded-xl border border-pastel-200 space-y-1">
+                            <span class="text-[10px] text-pastel-700 font-bold uppercase"><i class="fa-solid fa-passport mr-1.5"></i> รหัสมาตรฐาน ICD-10 (เดิม)</span>
+                            <span class="text-lg font-mono font-extrabold text-pastel-800 block" id="m3-icd10-code">S72.30</span>
+                            <p class="text-xs text-slate-600 mt-1" id="m3-icd10-name">Fracture of shaft of right femur</p>
+                            <p class="text-[10px] text-slate-400 mt-2 italic">* เน้นกลุ่มสถิติดั้งเดิม มีโครงสร้างระนาบเดียวตายตัว</p>
+                        </div>
+
+                        <!-- ICD-11 Card -->
+                        <div class="bg-pastel-50 p-4 rounded-xl border border-pastel-200 space-y-1">
+                            <span class="text-[10px] text-emerald-800 font-bold uppercase"><i class="fa-solid fa-star mr-1.5"></i> รหัสมาตรฐานยุคใหม่ ICD-11</span>
+                            <span class="text-lg font-mono font-extrabold text-emerald-800 block" id="m3-icd11-code">NC53.0 & XK9K</span>
+                            <p class="text-xs text-slate-600 mt-1" id="m3-icd11-name">Closed fracture of shaft of femur (Right side)</p>
+                            <p class="text-[10px] text-emerald-700/80 mt-2 font-medium">* ใช้ระบบ Post-coordination (การรวมรหัสร่วมแกนเพื่อขยายรายละเอียดความเจ็บป่วย)</p>
+                        </div>
+
+                        <!-- SNOMED CT Card -->
+                        <div class="bg-pastel-100 p-4 rounded-xl border border-pastel-300 space-y-1">
+                            <span class="text-[10px] text-pastel-800 font-bold uppercase"><i class="fa-solid fa-bezier-curve mr-1.5"></i> ศัพท์คลินิกวิทยาระดับลึก SNOMED CT</span>
+                            <span class="text-lg font-mono font-extrabold text-pastel-800 block" id="m3-snomed-code">208392002</span>
+                            <p class="text-xs text-slate-600 mt-1" id="m3-snomed-name">Fracture of right femur (disorder)</p>
+                            <p class="text-[10px] text-pastel-700 mt-2 font-medium">* รูปแบบ Ontology แสดงเครือข่ายความสัมพันธ์ไปถึงโครงสร้างกระดูกพยาธิวิทยา</p>
+                        </div>
+                    </div>
+
+                    <!-- Analytical explanation paragraph -->
+                    <div class="p-4 bg-pastel-50 rounded-xl border border-pastel-200 text-xs text-slate-600 leading-relaxed">
+                        <span class="font-bold text-pastel-800 block mb-1"><i class="fa-solid fa-magnifying-glass-chart"></i> วิเคราะห์ความลึกซึ้งของเคสจำลองนี้:</span>
+                        <p id="m3-conceptual-desc">
+                            คำอธิบาย: สำหรับเคสกระดูกหัก ICD-10 จะแยกหมวดหมู่ตามทศนิยมเพื่อบอกตำแหน่ง แต่อาจขาดรายละเอียดด้านความลึกของตำแหน่งข้างซ้าย-ขวาได้อย่างเสรี ในขณะที่ ICD-11 ใช้กลไก post-coordination (การเติมส่วนขยายข้างขวา XK9K อิงสถิติ) และ SNOMED CT โยงเข้ากับ Concept กายวิภาคอย่างอิสระไร้ขีดจำกัด
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Module 4: Cybersecurity Lab with 10 attack classes -->
+            <section id="tab-security" class="tab-content hidden space-y-6">
+                <div class="bg-white rounded-xl p-5 border border-pastel-200 space-y-4 shadow-sm">
+                    <div>
+                        <span class="text-xs font-bold text-pastel-700 uppercase tracking-widest block mb-1">Module 4</span>
+                        <h3 class="text-base sm:text-lg font-bold text-slate-800">ระบบรักษาความปลอดภัยสารสนเทศโรงพยาบาลและสัญจรกระชับพื้นที่</h3>
+                        <p class="text-xs text-slate-500">ทดสอบจำลองประเมินการตั้งรับและประท้วงการบุกรุกไซเบอร์ทางการแพทย์ 10 ประเภทยอดนิยมในโรงพยาบาล</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                        <!-- Attack choice selectors -->
+                        <div class="lg:col-span-5 bg-pastel-50/50 p-4 rounded-xl border border-pastel-200 space-y-1.5 max-h-[300px] overflow-y-auto">
+                            <span class="text-xs font-bold text-pastel-800 block mb-2"><i class="fa-solid fa-list text-pastel-600 mr-2"></i> กรุณาเลือกประเภทภัยคุกคามเพื่อทดสอบ:</span>
+                            <div class="space-y-1" id="cyber-attack-menu">
+                                <button onclick="selectCyberAttack('ransomware')" id="cyber-btn-ransomware" class="cyber-menu-btn w-full text-left text-xs p-2.5 rounded-lg transition-all font-semibold hover:bg-pastel-100 flex justify-between items-center bg-white border border-pastel-200 text-slate-700">
+                                    <span>1. Ransomware (มัลแวร์ขู่ค่าไถ่)</span>
+                                    <i class="fa-solid fa-lock text-red-500 text-[10px]"></i>
+                                </button>
+                                <button onclick="selectCyberAttack('malware')" id="cyber-btn-malware" class="cyber-menu-btn w-full text-left text-xs p-2.5 rounded-lg transition-all font-semibold hover:bg-pastel-100 flex justify-between items-center text-slate-500">
+                                    <span>2. Spyware / Keylogger</span>
+                                    <i class="fa-solid fa-eye text-orange-500 text-[10px]"></i>
+                                </button>
+                                <button onclick="selectCyberAttack('virus')" id="cyber-btn-virus" class="cyber-menu-btn w-full text-left text-xs p-2.5 rounded-lg transition-all font-semibold hover:bg-pastel-100 flex justify-between items-center text-slate-500">
+                                    <span>3. Computer Virus</span>
+                                    <i class="fa-solid fa-bug text-red-400 text-[10px]"></i>
+                                </button>
+                                <button onclick="selectCyberAttack('worm')" id="cyber-btn-worm" class="cyber-menu-btn w-full text-left text-xs p-2.5 rounded-lg transition-all font-semibold hover:bg-pastel-100 flex justify-between items-center text-slate-500">
+                                    <span>4. Network Worm (หนอนเครือข่าย)</span>
+                                    <i class="fa-solid fa-network-wired text-yellow-500 text-[10px]"></i>
+                                </button>
+                                <button onclick="selectCyberAttack('trojan')" id="cyber-btn-trojan" class="cyber-menu-btn w-full text-left text-xs p-2.5 rounded-lg transition-all font-semibold hover:bg-pastel-100 flex justify-between items-center text-slate-500">
+                                    <span>5. Trojan Horse (แฝงตัวควบคุม)</span>
+                                    <i class="fa-solid fa-horse-head text-amber-600 text-[10px]"></i>
+                                </button>
+                                <button onclick="selectCyberAttack('ddos')" id="cyber-btn-ddos" class="cyber-menu-btn w-full text-left text-xs p-2.5 rounded-lg transition-all font-semibold hover:bg-pastel-100 flex justify-between items-center text-slate-500">
+                                    <span>6. DDoS Attack (ถล่มพอร์ทัลล่ม)</span>
+                                    <i class="fa-solid fa-cloud-showers-water text-blue-500 text-[10px]"></i>
+                                </button>
+                                <button onclick="selectCyberAttack('phishing')" id="cyber-btn-phishing" class="cyber-menu-btn w-full text-left text-xs p-2.5 rounded-lg transition-all font-semibold hover:bg-pastel-100 flex justify-between items-center text-slate-500">
+                                    <span>7. Phishing (เบ็ดลวงถามรหัส)</span>
+                                    <i class="fa-solid fa-fish text-sky-500 text-[10px]"></i>
+                                </button>
+                                <button onclick="selectCyberAttack('mitm')" id="cyber-btn-mitm" class="cyber-menu-btn w-full text-left text-xs p-2.5 rounded-lg transition-all font-semibold hover:bg-pastel-100 flex justify-between items-center text-slate-500">
+                                    <span>8. Man-in-the-Middle (ดักข้อมูล)</span>
+                                    <i class="fa-solid fa-user-secret text-purple-500 text-[10px]"></i>
+                                </button>
+                                <button onclick="selectCyberAttack('sqli')" id="cyber-btn-sqli" class="cyber-menu-btn w-full text-left text-xs p-2.5 rounded-lg transition-all font-semibold hover:bg-pastel-100 flex justify-between items-center text-slate-500">
+                                    <span>9. SQL Injection (แฮกฟิลด์ป้อน)</span>
+                                    <i class="fa-solid fa-database text-teal-600 text-[10px]"></i>
+                                </button>
+                                <button onclick="selectCyberAttack('bruteforce')" id="cyber-btn-bruteforce" class="cyber-menu-btn w-full text-left text-xs p-2.5 rounded-lg transition-all font-semibold hover:bg-pastel-100 flex justify-between items-center text-slate-500">
+                                    <span>10. Brute Force (เดารหัสอัตโนมัติ)</span>
+                                    <i class="fa-solid fa-key text-slate-600 text-[10px]"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Simulated terminal dashboard -->
+                        <div class="lg:col-span-7 bg-pastel-50 p-5 rounded-xl border border-pastel-200 flex flex-col justify-between">
+                            <div class="space-y-3">
+                                <div class="flex justify-between items-center border-b border-pastel-200 pb-2">
+                                    <span class="text-xs font-bold text-pastel-800 uppercase tracking-wider flex items-center gap-1.5">
+                                        <i class="fa-solid fa-circle-nodes text-pastel-600"></i>
+                                        การทดลองภัย: <span id="cyber-attack-title" class="text-pastel-600 font-extrabold">Ransomware</span>
+                                    </span>
+                                    <button onclick="startAttackSimulation()" class="bg-pastel-600 hover:bg-pastel-700 text-white font-bold text-xs px-3.5 py-1.5 rounded-lg shadow-sm transition-all">ยิงสั่งจำลองการโจมตี (Simulate Attack)</button>
+                                </div>
+                                <p class="text-xs text-slate-500 leading-relaxed" id="cyber-attack-desc">กลไกการโจมตี: ทำการแฝงตัวสัญจรเข้ามาล็อกรหัสการเข้าใช้ข้อมูลภาพถ่ายและพยาธิวิทยา ดึงสิทธิส่วนรวมประชากรเพื่อเรียกค่าไถ่บิตคอยน์</p>
+
+                                <div class="bg-slate-900 rounded-lg p-3 relative font-mono text-[9px] text-green-300 overflow-hidden" id="cyber-console">
+                                    <div class="absolute top-1 right-2 text-[8px] text-slate-500 select-none">HOSPITAL NETWORK CONSOLE</div>
+                                    <pre class="space-y-0.5 overflow-y-auto max-h-[120px] pt-4" id="cyber-console-logs">$ system_status: awaiting_commands_</pre>
+                                </div>
+                            </div>
+
+                            <div class="mt-4 pt-4 border-t border-pastel-200 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+                                <div>
+                                    <span class="text-[9px] text-slate-400 block font-bold">แนวทางป้องกันและการแก้ไขปัญหา (ISO/IEC 27001):</span>
+                                    <span class="text-xs font-bold text-pastel-800" id="cyber-prevention-txt">การทำระบบ Backup ข้อมูลแบบออฟไลน์แยกชุด (Air-gapped Backups)</span>
+                                </div>
+                                <button onclick="cyberLabClearConsole()" class="text-[9px] bg-white border border-pastel-200 text-slate-500 hover:bg-pastel-100 px-2 py-1 rounded-lg">Clear logs</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Module 5: Innovation Hub (CDSS, Xray Vision, Telemetry) -->
+            <section id="tab-innovation" class="tab-content hidden space-y-6">
+                <!-- Subtab navigation for Module 5 -->
+                <div class="bg-pastel-50 p-1.5 rounded-xl border border-pastel-200 flex flex-wrap gap-1">
+                    <button onclick="switchM5Sub('cdss-expert')" id="m5-btn-cdss-expert" class="m5-sub-btn px-4 py-2 rounded-lg text-xs font-bold transition-all bg-white text-pastel-700 shadow-sm border border-pastel-200">1. CDSS Expert Engine</button>
+                    <button onclick="switchM5Sub('ai-vision')" id="m5-btn-ai-vision" class="m5-sub-btn px-4 py-2 rounded-lg text-xs font-bold transition-all text-slate-500 hover:text-pastel-700">2. AI Chest X-Ray Vision</button>
+                    <button onclick="switchM5Sub('iot-monitoring')" id="m5-btn-iot-monitoring" class="m5-sub-btn px-4 py-2 rounded-lg text-xs font-bold transition-all text-slate-500 hover:text-pastel-700">3. Remote IoT Telemetry</button>
+                </div>
+
+                <!-- Sub M5: CDSS Engine -->
+                <div id="m5-cdss-expert" class="m5-sub-content space-y-4">
+                    <div class="bg-white rounded-xl p-5 border border-pastel-200 space-y-4 shadow-sm">
+                        <div class="flex items-center space-x-3">
+                            <i class="fa-solid fa-brain text-pastel-600 text-lg"></i>
+                            <div>
+                                <h3 class="text-base font-bold text-pastel-800">ระบบกฎสนับสนุนการตัดสินใจทางคลินิก (Clinical Decision Support System)</h3>
+                                <p class="text-xs text-slate-500">จำลองระบบความปลอดภัยในการสั่งยา ตรวจสอบปฏิกิริยาระหว่างยา (Drug Interaction) หรือข้อบ่งชี้คัดค้านในการรักษาอย่างอัจฉริยะ</p>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                            <!-- Dropdown selectors -->
+                            <div class="bg-pastel-50 p-4 rounded-xl border border-pastel-200 space-y-3">
+                                <span class="text-xs font-bold text-slate-700 block"><i class="fa-solid fa-clipboard-user mr-1.5 text-pastel-600"></i> เลือกข้อมูลเพื่อทำการวินิจฉัยใบยา:</span>
+                                <div class="space-y-3">
+                                    <div>
+                                        <label class="block text-[10px] text-slate-500 mb-1">1. ประวัติและสภาพผู้ป่วย:</label>
+                                        <select id="m5-cdss-pt" class="w-full text-xs p-2 bg-white border border-pastel-300 rounded-lg text-slate-700 focus:outline-none" onchange="runCDSSEngine()">
+                                            <option value="none">-- กรุณาเลือกประวัติคนไข้ --</option>
+                                            <option value="pt-ckd">นายสมชัย (อายุ 72, ไตวายเรื้อรังระดับ 4 eGFR=22)</option>
+                                            <option value="pt-peds">เด็กหญิงปริม (อายุ 4 ปี, ไข้สูงฉับพลัน ต้องสงสัยติดเชื้อไวรัสไข้หวัดใหญ่)</option>
+                                            <option value="pt-cardiac">นางละไม (อายุ 61, โรคหัวใจเต้นผิดจังหวะ AF ทานยา Amiodarone ประจำ)</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="block text-[10px] text-slate-500 mb-1">2. ยาตัวใหม่ที่แพทย์จะเพิ่มจ่ายในระบบ:</label>
+                                        <select id="m5-cdss-drug" class="w-full text-xs p-2 bg-white border border-pastel-300 rounded-lg text-slate-700 focus:outline-none" onchange="runCDSSEngine()">
+                                            <option value="none">-- เลือกยาที่จะจ่าย --</option>
+                                            <option value="amox">Amoxicillin (ยาฆ่าเชื้อสามัญ)</option>
+                                            <option value="ibuprofen">Ibuprofen (ยาแก้ปวดลดอักเสบกลุ่ม NSAIDs)</option>
+                                            <option value="clarithro">Clarithromycin (ยาฆ่าเชื้อแบคทีเรียกลุ่ม Macrolide)</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Warning Alerts output -->
+                            <div class="bg-pastel-50/50 p-4 rounded-xl border border-pastel-200 flex flex-col justify-between">
+                                <div>
+                                    <span class="text-xs font-bold text-slate-700 block mb-2"><i class="fa-solid fa-triangle-exclamation text-pastel-600 mr-2"></i> ป้ายวิเคราะห์ผลความปลอดภัย (CDSS Core Alerts Evaluation)</span>
+                                    <div id="m5-cdss-alerts-box" class="p-4 rounded-lg bg-white border border-pastel-150 text-xs text-slate-400 min-h-[110px] flex items-center justify-center text-center leading-relaxed">
+                                        กรุณาคลิกเลือกจับคู่คนไข้และยากับตัวเลือกทางซ้ายมือ เพื่อส่งสัญญาณไปประมวลผลข้อกฎความปลอดภัยทันที
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sub M5: AI Chest X-ray -->
+                <div id="m5-ai-vision" class="m1-sub-content hidden space-y-4">
+                    <div class="bg-white rounded-xl p-5 border border-pastel-200 space-y-4 shadow-sm">
+                        <div class="flex items-center space-x-3">
+                            <i class="fa-solid fa-binoculars text-pastel-600 text-lg"></i>
+                            <div>
+                                <h3 class="text-base font-bold text-pastel-800">ระบบจำลองปัญญาประดิษฐ์ส่องฟิล์มรังสี (AI Chest X-Ray Vision Hub)</h3>
+                                <p class="text-xs text-slate-500">การตรวจจับพิกัดตีกรอบพยาธิสภาพมะเร็งหรือจุดน่าสงสัยในทรวงอกโดยอัตโนมัติด้วยเครือข่าย Convolutional Neural Network</p>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                            <!-- Controls and trigger buttons -->
+                            <div class="lg:col-span-5 bg-pastel-50/50 p-4 rounded-xl border border-pastel-200 flex flex-col justify-between">
+                                <div class="space-y-4">
+                                    <span class="text-xs font-bold text-slate-700 block"><i class="fa-solid fa-sliders text-pastel-600 mr-1.5"></i> เลือกแอปพลิเคชันคัดกรองรอยโรค:</span>
+                                    
+                                    <div class="p-3 bg-white rounded-lg border border-pastel-150 space-y-2 text-xs">
+                                        <div class="flex justify-between">
+                                            <span class="text-slate-500">ผลการระบุโดยปัญญาประดิษฐ์:</span>
+                                            <span id="m5-ai-class" class="text-pastel-700 font-bold">รอเริ่มคัดกรอง...</span>
+                                        </div>
+                                        <div class="flex justify-between">
+                                            <span class="text-slate-500">ความมั่นใจในการจำแนก (Conf):</span>
+                                            <span id="m5-ai-conf" class="text-pastel-700 font-bold">-</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="flex flex-col gap-2">
+                                        <button onclick="m5TriggerAI('pneumonia')" class="py-2.5 px-3 text-left text-xs bg-white border border-pastel-300 hover:bg-pastel-100 rounded-lg text-slate-700 font-bold transition flex items-center justify-between">
+                                            <span>สแกนหาสัญญาณปอดอักเสบ (Pneumonia)</span>
+                                            <i class="fa-solid fa-lungs text-pastel-600"></i>
+                                        </button>
+                                        <button onclick="m5TriggerAI('cardiomegaly')" class="py-2.5 px-3 text-left text-xs bg-white border border-pastel-300 hover:bg-pastel-100 rounded-lg text-slate-700 font-bold transition flex items-center justify-between">
+                                            <span>สแกนภาวะขนาดหัวใจโต (Cardiomegaly)</span>
+                                            <i class="fa-solid fa-heart-pulse text-red-500"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <button onclick="m5ResetAI()" class="mt-4 w-full py-1.5 bg-white border border-pastel-300 text-slate-500 hover:bg-pastel-50 rounded-lg text-xs transition">ล้างผลการประเมินปัญญาประดิษฐ์</button>
+                            </div>
+
+                            <!-- Screen View representation -->
+                            <div class="lg:col-span-7 bg-pastel-50 p-4 rounded-xl border border-pastel-200 flex flex-col items-center justify-center">
+                                <span class="text-[10px] text-slate-400 font-bold block mb-2 w-full text-left">หน้าปัดสแกนเนอร์จำลองปัญญาประดิษฐ์</span>
+                                <div class="w-full aspect-[4/3] bg-slate-900 rounded-lg border border-pastel-200 flex items-center justify-center relative overflow-hidden">
+                                    <div class="w-44 h-44 border border-slate-700 bg-slate-800 rounded relative flex items-center justify-center">
+                                        <!-- Rib Cage Lines -->
+                                        <svg class="absolute w-40 h-40 text-white opacity-20" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="1.5">
+                                            <rect x="48" y="5" width="4" height="90" rx="1" fill="currentColor" />
+                                            <path d="M45,15 C20,10 15,35 45,45" />
+                                            <path d="M45,30 C15,25 10,50 45,60" />
+                                            <path d="M45,45 C10,40 5,65 45,75" />
+                                            <path d="M55,15 C80,10 85,35 55,45" />
+                                            <path d="M55,30 C85,25 90,50 55,60" />
+                                            <path d="M55,45 C90,40 95,65 55,75" />
+                                        </svg>
+                                        <!-- Cardiac Shadow -->
+                                        <ellipse id="m5-xray-heart" cx="55" cy="50" rx="14" ry="18" class="text-slate-600 fill-current opacity-30 transition-all duration-300" />
+                                        
+                                        <!-- Heatmap and Bounding vector -->
+                                        <div id="m5-ai-heatmap" class="absolute w-12 h-12 rounded-full border border-dashed border-red-500 opacity-0 transition-all duration-300 pointer-events-none flex items-center justify-center">
+                                            <span class="text-[7px] text-white font-mono bg-red-600 px-1 py-0.2 rounded absolute -top-4">Target Detect</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sub M5: Remote IoT Telemetry -->
+                <div id="m5-iot-monitoring" class="m1-sub-content hidden space-y-4">
+                    <div class="bg-white rounded-xl p-5 border border-pastel-200 space-y-4 shadow-sm">
+                        <div class="flex items-center space-x-3">
+                            <i class="fa-solid fa-tower-broadcast text-pastel-600 text-lg animate-pulse"></i>
+                            <div>
+                                <h3 class="text-base font-bold text-pastel-800">ระบบติดตามสัญญาณชีพเตียงผู้ป่วยระยะไกล (Remote Patient IoT Telemetry)</h3>
+                                <p class="text-xs text-slate-500">ประมวลผลความคืบหน้าของอัตราการเต้นหัวใจ (Heart Rate) และค่าออกซิเจนในกระแสเลือด (SpO2) บนอุปกรณ์พกพาแบบเรียลไทม์</p>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                            <!-- Real-time graph drawing -->
+                            <div class="lg:col-span-8 bg-pastel-50 p-4 rounded-xl border border-pastel-200 space-y-3">
+                                <span class="text-xs font-bold text-slate-700 block"><i class="fa-solid fa-chart-line text-pastel-600 mr-2"></i> สัญญาณคลื่นไฟฟ้าหัวใจจำลอง (ECG Live Waves)</span>
+                                <div class="w-full h-32 bg-slate-900 border border-pastel-300 rounded-lg relative overflow-hidden">
+                                    <canvas id="m5-ecg-canvas" class="w-full h-full"></canvas>
+                                    <div class="absolute top-2 left-2 text-[8px] text-slate-400 font-mono select-none">Lead II (Continuous)</div>
+                                </div>
+
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div class="p-3 bg-white border border-pastel-200 rounded-lg flex justify-between items-center shadow-sm">
+                                        <div>
+                                            <span class="text-[9px] text-slate-400 block font-bold">ชีพจร (Heart Rate)</span>
+                                            <span id="m5-iot-hr" class="text-xl font-bold text-pastel-700">72 bpm</span>
+                                        </div>
+                                        <i class="fa-solid fa-heart-pulse text-pastel-600 animate-pulse"></i>
+                                    </div>
+                                    <div class="p-3 bg-white border border-pastel-200 rounded-lg flex justify-between items-center shadow-sm">
+                                        <div>
+                                            <span class="text-[9px] text-slate-400 block font-bold">ออกซิเจน (SpO2)</span>
+                                            <span id="m5-iot-spo2" class="text-xl font-bold text-pastel-600">98%</span>
+                                        </div>
+                                        <i class="fa-solid fa-droplet text-emerald-500"></i>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Action commands -->
+                            <div class="lg:col-span-4 bg-pastel-50/50 p-4 rounded-xl border border-pastel-200 flex flex-col justify-between">
+                                <div class="space-y-4">
+                                    <span class="text-xs font-bold text-slate-700 block"><i class="fa-solid fa-bell text-pastel-600 mr-1.5"></i> กล่องเตือนระดับความปลอดภัยประชากร:</span>
+                                    
+                                    <div id="m5-iot-alarm-box" class="p-4 rounded-xl bg-white border border-pastel-200 text-center text-xs font-semibold flex items-center justify-center min-h-[90px] text-pastel-700 leading-relaxed shadow-sm">
+                                        <div>
+                                            <i class="fa-solid fa-circle-check text-pastel-600 text-lg block mb-1"></i>
+                                            สัญญาณชีพอยู่ในระดับคงที่ (Normal)
+                                        </div>
+                                    </div>
+
+                                    <div class="flex gap-2">
+                                        <button onclick="m5SimulateIot('normal')" class="flex-1 py-2 bg-white border border-pastel-300 hover:bg-pastel-100 text-slate-700 font-bold text-xs rounded-lg transition shadow-sm">จำลองสภาวะปกติ</button>
+                                        <button onclick="m5SimulateIot('sepsis')" class="flex-1 py-2 bg-red-600 hover:bg-red-700 text-white font-bold text-xs rounded-lg transition shadow-sm">จำลองวิกฤต (Hypoxia)</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- Application Footer -->
+    <footer class="bg-white border-t border-pastel-150 py-3 px-6 text-slate-400 text-[10px] shrink-0 flex justify-between items-center shadow-inner">
+        <span>หลักสูตรสารสนเทศการแพทย์ยุคใหม่ • รายวิชา Health System Science (HSS)</span>
+        <span>มหาวิทยาลัยนเรศวร • พัฒนาขึ้นเพื่อมุ่งเน้นความโปร่งใสในทางสารสนเทศ</span>
+    </footer>
+
+    <!-- JavaScript Business Logic -->
+    <script>
+        // Main Tab switcher
+        function switchTab(tabId) {
+            const contents = document.querySelectorAll('.tab-content');
+            contents.forEach(content => content.classList.add('hidden'));
+
+            const target = document.getElementById('tab-' + tabId);
+            if (target) target.classList.remove('hidden');
+
+            const buttons = document.querySelectorAll('.tab-btn');
+            buttons.forEach(btn => {
+                btn.classList.remove('bg-pastel-100', 'text-pastel-800', 'border-l-4', 'border-pastel-600');
+                btn.classList.add('text-slate-600', 'hover:bg-pastel-50');
+            });
+
+            const current = document.getElementById('btn-' + tabId);
+            if (current) {
+                current.classList.add('bg-pastel-100', 'text-pastel-800', 'border-l-4', 'border-pastel-600');
+                current.classList.remove('text-slate-600', 'hover:bg-pastel-50');
+            }
+
+            // Canvas initialization when tab switching to innovation
+            if (tabId === 'innovation') {
+                setTimeout(initECGCanvas, 150);
+            }
+        }
+
+        // Subtab M1 navigation switching
+        function switchM1Sub(subId) {
+            const contents = document.querySelectorAll('.m1-sub-content');
+            contents.forEach(content => content.classList.add('hidden'));
+
+            const target = document.getElementById('m1-' + subId);
+            if (target) target.classList.remove('hidden');
+
+            const buttons = document.querySelectorAll('.m1-sub-btn');
+            buttons.forEach(btn => {
+                btn.classList.remove('bg-white', 'text-pastel-700', 'shadow-sm', 'border', 'border-pastel-200');
+                btn.classList.add('text-slate-500', 'hover:text-pastel-700');
+            });
+
+            const current = document.getElementById('m1-btn-' + subId);
+            if (current) {
+                current.classList.add('bg-white', 'text-pastel-700', 'shadow-sm', 'border', 'border-pastel-200');
+                current.classList.remove('text-slate-500', 'hover:text-pastel-700');
+            }
+        }
+
+        // Subtab M5 navigation switching
+        function switchM5Sub(subId) {
+            const contents = document.querySelectorAll('.m5-sub-content');
+            contents.forEach(content => content.classList.add('hidden'));
+
+            const target = document.getElementById('m5-' + subId);
+            if (target) target.classList.remove('hidden');
+
+            const buttons = document.querySelectorAll('.m5-sub-btn');
+            buttons.forEach(btn => {
+                btn.classList.remove('bg-white', 'text-pastel-700', 'shadow-sm', 'border', 'border-pastel-200');
+                btn.classList.add('text-slate-500', 'hover:text-pastel-700');
+            });
+
+            const current = document.getElementById('m5-btn-' + subId);
+            if (current) {
+                current.classList.add('bg-white', 'text-pastel-700', 'shadow-sm', 'border', 'border-pastel-200');
+                current.classList.remove('text-slate-500', 'hover:text-pastel-700');
+            }
+
+            if (subId === 'iot-monitoring') {
+                setTimeout(initECGCanvas, 100);
+            }
+        }
+
+        // DICOM preset modifiers
+        function setDicomPreset(preset) {
+            const sliderLvl = document.getElementById('m1-slide-lvl');
+            const sliderWdth = document.getElementById('m1-slide-wdth');
+            const text = document.getElementById('dicom-preset-txt');
+
+            if (preset === 'bone') {
+                sliderLvl.value = 160;
+                sliderWdth.value = 210;
+                text.innerText = "Preset: Bone Window";
+            } else if (preset === 'lung') {
+                sliderLvl.value = 60;
+                sliderWdth.value = 70;
+                text.innerText = "Preset: Lung Window";
+            }
+            updateDicomM1();
+        }
+
+        function updateDicomM1() {
+            const lvl = document.getElementById('m1-slide-lvl').value;
+            const wdth = document.getElementById('m1-slide-wdth').value;
+            document.getElementById('m1-val-lvl').innerText = lvl + '%';
+            document.getElementById('m1-val-wdth').innerText = wdth + '%';
+
+            const img = document.getElementById('dicom-img-mock');
+            img.style.filter = `brightness(${lvl/100}) contrast(${wdth/100})`;
+        }
+
+        // SQL Simulation Database
+        const mockPatientsDB = [
+            { hn: "HN6942011", name: "นายศิริสุข สดใส", age: 67, gender: "M" },
+            { hn: "HN6942033", name: "นางอุ่นใจ มีสุข", age: 72, gender: "F" },
+            { hn: "HN6942055", name: "นายอดิศร วรเวช", age: 45, gender: "M" },
+            { hn: "HN6942077", name: "น.ส.มาลี ดั่งดอกไม้", age: 28, gender: "F" }
+        ];
+
+        const mockVisitsDB = [
+            { visit_id: "V01", hn: "HN6942011", diag_icd10: "I10", cost: 1200 },
+            { visit_id: "V02", hn: "HN6942033", diag_icd10: "E11.9", cost: 850 },
+            { visit_id: "V03", hn: "HN6942055", diag_icd10: "K35.8", cost: 15400 },
+            { visit_id: "V04", hn: "HN6942077", diag_icd10: "J00", cost: 350 }
+        ];
+
+        function setSQLInput(query) {
+            document.getElementById('sql-input').value = query;
+        }
+
+        function runSQLQuery() {
+            const query = document.getElementById('sql-input').value.trim().toUpperCase();
+            const tableBox = document.getElementById('sql-result-table-box');
+
+            if (query.includes("PATIENTS") && query.includes("AGE > 60")) {
+                renderSQLTable(["HN", "NAME", "AGE", "GENDER"], [
+                    { hn: "HN6942011", name: "นายศิริสุข สดใส", age: 67, gender: "M" },
+                    { hn: "HN6942033", name: "นางอุ่นใจ มีสุข", age: 72, gender: "F" }
+                ]);
+            } else if (query.includes("PATIENTS") && !query.includes("WHERE")) {
+                renderSQLTable(["HN", "NAME", "AGE", "GENDER"], mockPatientsDB);
+            } else if (query.includes("OUTPATIENT_VISITS") && query.includes("COST > 1000")) {
+                renderSQLTable(["VISIT_ID", "HN", "DIAG_ICD10", "COST"], [
+                    { visit_id: "V01", hn: "HN6942011", diag_icd10: "I10", cost: 1200 },
+                    { visit_id: "V03", hn: "HN6942055", diag_icd10: "K35.8", cost: 15400 }
+                ]);
+            } else {
+                tableBox.innerHTML = `<span class="text-xs text-red-500 font-mono font-bold">⚠️ SQL Syntax Error หรือไม่มีสิทธิ์เข้าถึงตารางดลบสัญจรนี้</span>`;
+            }
+        }
+
+        function renderSQLTable(headers, rows) {
+            const box = document.getElementById('sql-result-table-box');
+            let html = `<table class="min-w-full text-[10px] font-mono border-collapse text-left"><thead><tr class="bg-pastel-50 text-pastel-700 font-bold border-b border-pastel-200">`;
+            headers.forEach(h => html += `<th class="p-2">${h}</th>`);
+            html += `</tr></thead><tbody class="divide-y divide-pastel-100 text-slate-600">`;
+            rows.forEach(r => {
+                html += `<tr>`;
+                Object.values(r).forEach(v => {
+                    html += `<td class="p-2">${v}</td>`;
+                });
+                html += `</tr>`;
+            });
+            html += `</tbody></table>`;
+            box.innerHTML = html;
+        }
+
+        // HL7 Messaging Decoder
+        function decodeHL7(segment) {
+            const exp = document.getElementById('hl7-explanation');
+            if (segment === 'MSH') {
+                exp.innerHTML = `
+                    <span class="text-pastel-800 font-bold block mb-1">MSH Segment (Message Header)</span>
+                    ข้อมูลจำเพาะหัวระเบียน:
+                    <ul class="list-disc list-inside ml-2 mt-1 space-y-1 text-slate-500 text-[11px]">
+                        <li><strong>HIS -> RADIOLOGY:</strong> ระบบข้อมูลโรงพยาบาลส่งสัญจรไปที่รังสีวิทยา</li>
+                        <li><strong>ADT^A08:</strong> ประเภทข้อความส่งอัปเดตประวัติ Admission คนไข้</li>
+                        <li><strong>MSG001:</strong> หมายเลขคีย์สัญจรกระชับข้อความ</li>
+                    </ul>
+                `;
+            } else if (segment === 'PID') {
+                exp.innerHTML = `
+                    <span class="text-pastel-800 font-bold block mb-1">PID Segment (Patient Identification)</span>
+                    ข้อมูลตัวตนผู้ป่วย:
+                    <ul class="list-disc list-inside ml-2 mt-1 space-y-1 text-slate-500 text-[11px]">
+                        <li><strong>HN6942059:</strong> คีย์ประวัติผู้ป่วย</li>
+                        <li><strong>นายสมชาย ใจดี:</strong> ข้อมูลชื่อตัวและนามสกุลสะกดถูกต้อง</li>
+                        <li><strong>19850529:</strong> วันเดือนปีเกิดจริง 29 พ.ค. 2528</li>
+                        <li><strong>M:</strong> เพศสัญจรสากล (ชาย)</li>
+                    </ul>
+                `;
+            } else if (segment === 'PV1') {
+                exp.innerHTML = `
+                    <span class="text-pastel-800 font-bold block mb-1">PV1 Segment (Patient Visit)</span>
+                    ข้อมูลจุดให้บริการตรวจรับ:
+                    <ul class="list-disc list-inside ml-2 mt-1 space-y-1 text-slate-500 text-[11px]">
+                        <li><strong>O:</strong> สถานะผู้ป่วยนอก (Outpatient)</li>
+                        <li><strong>OPD_ROOM5:</strong> จุดพิกัดหอห้องตรวจที่ 5</li>
+                        <li><strong>21405^นพ.กันต์:</strong> คีย์และชื่อระเบียนแพทย์ผู้ดูแลคัดกรองโรค</li>
+                    </ul>
+                `;
+            } else if (segment === 'OBX') {
+                exp.innerHTML = `
+                    <span class="text-pastel-800 font-bold block mb-1">OBX Segment (Observation/Result)</span>
+                    ข้อมูลผลแล็บหรือข้อบ่งชี้ทางพยาธิสภาพ:
+                    <ul class="list-disc list-inside ml-2 mt-1 space-y-1 text-slate-500 text-[11px]">
+                        <li><strong>TX:</strong> รูปแบบเป็นข้อความบรรยาย (Text)</li>
+                        <li><strong>DIAG_FINDINGS:</strong> หัวข้ออธิบายผลลัพธ์จำเพาะ</li>
+                        <li><strong>"พบเงาความทึบแสง...":</strong> ข้อบ่งชี้พยาธิกำเนิดเนื้อเยื่อ</li>
+                    </ul>
+                `;
+            }
+        }
+
+        // FHIR REST Client Simulation
+        function sendFHIRRequest() {
+            const resp = document.getElementById('fhir-api-response');
+            resp.innerHTML = `<span class="text-pastel-600 font-mono animate-pulse">📡 Sending REST API request over HTTPS...</span>`;
+            
+            setTimeout(() => {
+                resp.innerHTML = JSON.stringify({
+                    "status": 200,
+                    "statusText": "OK",
+                    "resource": {
+                        "resourceType": "Patient",
+                        "id": "pat-69420",
+                        "active": true,
+                        "name": [{"use": "official", "text": "นายสมชาย ใจดี"}],
+                        "gender": "male",
+                        "birthDate": "1985-05-29",
+                        "managingOrganization": {
+                            "reference": "Organization/moph-01",
+                            "display": "โรงพยาบาลกระทรวงสาธารณสุขจำลอง"
+                        }
+                    }
+                }, null, 2);
+            }, 650);
+        }
+
+        // Standard Health Files Schema Definitions (MOPH Ministry Standard)
+        const mophFilesData = [
+            { id: "PERSON", category: "basic", title: "ทะเบียนข้อมูลบุคคล", desc: "ฐานข้อมูลหลักเก็บรวบรวมประวัติประชากรทั้งหมดในเขตบริการ", fields: [{f:"HOSPCODE",t:"CHAR",l:"5",d:"รหัสโรงพยาบาล"},{f:"PID",t:"VARCHAR",l:"15",d:"เลขประจำตัวบริการ"},{f:"CID",t:"CHAR",l:"13",d:"เลขประชาชน"}] },
+            { id: "ADDRESS", category: "basic", title: "ข้อมูลที่อยู่ประชากร", desc: "ที่อยู่ที่ระบุพิกัดเส้นทางของบ้านผู้รับบริการในพื้นที่", fields: [{f:"HOSPCODE",t:"CHAR",l:"5",d:"รหัสสัญจร"},{f:"PID",t:"VARCHAR",l:"15",d:"เลขประจำตัว"},{f:"HOUSE_ID",t:"VARCHAR",l:"11",d:"รหัสบ้าน"}] },
+            { id: "DEATH", category: "basic", title: "ประวัติการเสียชีวิต", desc: "บันทึกข้อมูลการตายรวมถึงพยาธิสาเหตุตามสถิติของอำเภอ", fields: [{f:"HOSPCODE",t:"CHAR",l:"5",d:"รหัสสถานบริการ"},{f:"PID",t:"VARCHAR",l:"15",d:"เลขประจำตัว"},{f:"DEATH_DATE",t:"DATE",l:"-",d:"วันที่ตาย"}] },
+            { id: "CHRONIC", category: "basic", title: "ทะเบียนผู้ป่วยโรคเรื้อรัง", desc: "ลงทะเบียนสถิติคนไข้โรคไม่ติดต่อ เช่น เบาหวาน ความดัน ไตวาย", fields: [{f:"HOSPCODE",t:"CHAR",l:"5",d:"รหัสรพ."},{f:"PID",t:"VARCHAR",l:"15",d:"เลขคนไข้"},{f:"CHRONIC_ICD",t:"VARCHAR",l:"6",d:"รหัสโรควินิจฉัย"}] },
+            { id: "CARD", category: "basic", title: "สิทธิประกันสุขภาพ", desc: "บันทึกรายละเอียดสิทธิการเคลมเบิกจ่ายหลักประกันสังคมและบัตรทอง", fields: [{f:"HOSPCODE",t:"CHAR",l:"5",d:"รหัสรพ."},{f:"PID",t:"VARCHAR",l:"15",d:"เลขคนไข้"},{f:"INSTYPE",t:"CHAR",l:"4",d:"ประเภทสิทธิ"}] },
+            
+            { id: "HOME", category: "prevention", title: "ข้อมูลสิ่งแวดล้อมสุขาภิบาลบ้าน", desc: "ประเมินความปลอดภัยแหล่งน้ำสุขาภิบาลรอบที่พักอาศัย", fields: [{f:"HOSPCODE",t:"CHAR",l:"5",d:"รหัสรพ."},{f:"HOUSE_ID",t:"VARCHAR",l:"11",d:"รหัสบ้าน"},{f:"WATER",t:"CHAR",l:"1",d:"ประเภทน้ำดื่ม"}] },
+            { id: "ANC", category: "prevention", title: "บริการตรวจฝากครรภ์", desc: "ประวัติการตรวจสุขภาพฝากครรภ์และพฤติกรรมดูแลมารดา", fields: [{f:"HOSPCODE",t:"CHAR",l:"5",d:"รหัสรพ."},{f:"PID",t:"VARCHAR",l:"15",d:"เลขประจำตัว"},{f:"ANC_DATE",t:"DATE",l:"-",d:"วันฝากครรภ์"}] },
+            { id: "EPI", category: "prevention", title: "บริการรับวัคซีนเด็ก", desc: "การเฝ้าระวังติดตามอัตราภูมิคุ้มกันระดับประชากรวัยเด็ก", fields: [{f:"HOSPCODE",t:"CHAR",l:"5",d:"รหัสรพ."},{f:"PID",t:"VARCHAR",l:"15",d:"เลขเด็ก"},{f:"VACCINE_TYPE",t:"CHAR",l:"3",d:"รหัสวัคซีน"}] },
+            { id: "DEVELOP", category: "prevention", title: "บริการตรวจพัฒนาการ", desc: "ประเมินความฉลาดทางด้านอารมณ์และกล้ามเนื้อเด็กเล็กในชุมชน", fields: [{f:"HOSPCODE",t:"CHAR",l:"5",d:"รหัสสัญจร"},{f:"PID",t:"VARCHAR",l:"15",d:"เลขคนไข้"},{f:"AGEDEVELOP",t:"INTEGER",l:"3",d:"อายุกี่เดือน"}] },
+            
+            { id: "SERVICE", category: "treatment", title: "บริการผู้ป่วยนอก (OPD)", desc: "ประวัติหลักการลงสถิติมารับบริการตรวจนอกหอพักโรค", fields: [{f:"HOSPCODE",t:"CHAR",l:"5",d:"รหัสรพ."},{f:"SEQ",t:"VARCHAR",l:"15",d:"คีย์ลำดับบริการ"},{f:"DATE_SERV",t:"DATE",l:"-",d:"วันที่ตรวจ"}] },
+            { id: "DIAGNOSIS_OPD", category: "treatment", title: "วินิจฉัยโรคผู้ป่วยนอก", desc: "การลงบันทึกรหัสวินิจฉัยโรคตามสัญจรสถิติ ICD-10", fields: [{f:"HOSPCODE",t:"CHAR",l:"5",d:"รหัสรพ."},{f:"SEQ",t:"VARCHAR",l:"15",d:"คีย์บริการ"},{f:"DIAGCODE",t:"VARCHAR",l:"6",d:"รหัส ICD10"}] },
+            { id: "DRUG_OPD", category: "treatment", title: "การจ่ายยาผู้ป่วยนอก", desc: "ประวัติรายการยากลับบ้าน คอนโทรลคลังพัสดุยาและต้นทุน", fields: [{f:"HOSPCODE",t:"CHAR",l:"5",d:"รหัสรพ."},{f:"SEQ",t:"VARCHAR",l:"15",d:"คีย์สัญจร"},{f:"DID",t:"CHAR",l:"24",d:"รหัสยาสามัญ 24 หลัก"}] },
+            { id: "REFER_OUT", category: "treatment", title: "การส่งต่อผู้ป่วยภายนอก", desc: "ประวัติการส่งตัวผู้ป่วยไปสัญจรวินิจฉัยรักษาต่อยังโรงพยาบาลระดับสูง", fields: [{f:"HOSPCODE",t:"CHAR",l:"5",d:"รหัสส่ง"},{f:"REFER_ID",t:"VARCHAR",l:"15",d:"คีย์อ้างอิง"},{f:"HOSP_TO",t:"CHAR",l:"5",d:"รหัสหน่วยรับช่วงต่อ"}] },
+            
+            { id: "LABFU", category: "special", title: "ประวัติตรวจแล็บโรคเรื้อรัง", desc: "ติดตามประเมินผลห้องปฏิบัติการเพื่อควบคุมสถิติโรคระยะยาว", fields: [{f:"HOSPCODE",t:"CHAR",l:"5",d:"รหัสรพ."},{f:"PID",t:"VARCHAR",l:"15",d:"เลขสัญจร"},{f:"LABTEST",t:"CHAR",l:"1",d:"รหัสตรวจแล็บ"}] },
+            { id: "CANCER", category: "special", title: "ทะเบียนประวัติโรคมะเร็ง", desc: "รวบรวมประวัติพยาธิสภาพเนื้องอกร้ายเพื่อวางสัญจรรวมเชิงชาติ", fields: [{f:"HOSPCODE",t:"CHAR",l:"5",d:"รหัสรพ."},{f:"PID",t:"VARCHAR",l:"15",d:"เลขคนไข้"},{f:"CANCER_STAGE",t:"CHAR",l:"1",d:"ระยะมะเร็ง"}] },
+            { id: "DRUGALLERGY", category: "special", title: "ประวัติการแพ้ยา", desc: "ฐานระบบส่งต่อประวัติแพ้ยาเพื่อแจ้งเตือนข้ามเครือข่ายโรงพยาบาล", fields: [{f:"HOSPCODE",t:"CHAR",l:"5",d:"รหัสรพ."},{f:"PID",t:"VARCHAR",l:"15",d:"เลขคนไข้"},{f:"GENERIC_NAME",t:"VARCHAR",l:"50",d:"ชื่อยาสามัญที่แพ้"}] }
+        ];
+
+        // M2 initialization and loading
+        function load43FilesGrid() {
+            const grid = document.getElementById('m2-files-grid');
+            grid.innerHTML = '';
+            
+            mophFilesData.forEach((file, index) => {
+                let badgeColor = "bg-slate-100 text-slate-600";
+                if (file.category === "basic") badgeColor = "bg-pastel-100 text-pastel-800 border border-pastel-200";
+                if (file.category === "prevention") badgeColor = "bg-emerald-100 text-emerald-800 border border-emerald-200";
+                if (file.category === "treatment") badgeColor = "bg-rose-100 text-rose-800 border border-rose-200";
+                if (file.category === "special") badgeColor = "bg-purple-100 text-purple-800 border border-purple-200";
+
+                grid.innerHTML += `
+                    <div class="m2-file-card p-3 bg-white border border-pastel-200 rounded-xl hover:border-pastel-600 hover:shadow-sm transition-all cursor-pointer flex flex-col justify-between" data-category="${file.category}" onclick="view43Detail('${file.id}')">
+                        <span class="text-[9px] font-mono font-bold text-pastel-700">${file.id}</span>
+                        <h5 class="text-xs font-bold text-slate-700 mt-1 truncate">${file.title}</h5>
+                        <span class="text-[8px] px-1.5 py-0.5 rounded-full mt-2 text-center truncate ${badgeColor}">${file.category.toUpperCase()}</span>
+                    </div>
+                `;
+            });
+        }
+
+        function filter43Group(cat) {
+            const buttons = document.querySelectorAll('.m2-cat-btn');
+            buttons.forEach(b => {
+                b.classList.remove('bg-pastel-600', 'text-white');
+                b.classList.add('bg-white', 'border', 'border-pastel-200', 'text-slate-600', 'hover:bg-pastel-50');
+            });
+            event.target.classList.add('bg-pastel-600', 'text-white');
+            event.target.classList.remove('bg-white', 'border', 'border-pastel-200', 'text-slate-600', 'hover:bg-pastel-50');
+
+            const cards = document.querySelectorAll('.m2-file-card');
+            cards.forEach(c => {
+                if (cat === 'all' || c.getAttribute('data-category') === cat) {
+                    c.classList.remove('hidden');
+                } else {
+                    c.classList.add('hidden');
+                }
+            });
+        }
+
+        function search43Files() {
+            const val = document.getElementById('m2-search-input').value.toLowerCase();
+            const cards = document.querySelectorAll('.m2-file-card');
+            cards.forEach(c => {
+                const text = c.innerText.toLowerCase();
+                if (text.includes(val)) {
+                    c.classList.remove('hidden');
+                } else {
+                    c.classList.add('hidden');
+                }
+            });
+        }
+
+        function view43Detail(id) {
+            const file = mophFilesData.find(f => f.id === id);
+            if (!file) return;
+
+            document.getElementById('m2-detail-card').classList.remove('hidden');
+            document.getElementById('m2-detail-id').innerText = file.id;
+            document.getElementById('m2-detail-title').innerText = file.title;
+            document.getElementById('m2-detail-desc').innerText = file.desc;
+            document.getElementById('m2-detail-cat').innerText = `หมวดหมู่สัญจร: ${file.category.toUpperCase()}`;
+
+            const tbody = document.getElementById('m2-detail-table-body');
+            tbody.innerHTML = '';
+            file.fields.forEach(f => {
+                tbody.innerHTML += `
+                    <tr class="hover:bg-pastel-50/50">
+                        <td class="p-1.5 text-pastel-700 font-bold">${f.f}</td>
+                        <td class="p-1.5">${f.t}</td>
+                        <td class="p-1.5">${f.l}</td>
+                        <td class="p-1.5 text-slate-500">${f.d}</td>
+                    </tr>
+                `;
+            });
+
+            // Build CSV sample output representation
+            let headers = file.fields.map(f => f.f).join("|");
+            let rowData = file.fields.map(f => {
+                if (f.f === "HOSPCODE") return "10665";
+                if (f.f === "PID") return "P69420";
+                if (f.f === "CID") return "1659901412345";
+                if (f.f.includes("DATE")) return "2026-05-29";
+                if (f.f === "COST" || f.f === "PRICE") return "1250.00";
+                return "VAL_" + f.f.substring(0, 3);
+            }).join("|");
+
+            document.getElementById('m2-detail-csv').innerText = `${headers}\n${rowData}\n... (ระบบฐานข้อมูลกลาง HDC)`;
+            document.getElementById('m2-detail-card').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        // Module 3: Triple-system detailed mapping (including ICD-11)
+        const mappingCaseStudies = {
+            "fracture-femur": {
+                icd10: "S72.30",
+                icd10Name: "Fracture of shaft of femur, closed",
+                icd11: "NC53.0 & XK9K",
+                icd11Name: "Closed fracture of shaft of femur (Right side specified)",
+                snomed: "208392002",
+                snomedName: "Fracture of right femur (disorder)",
+                desc: "คำอธิบาย: ICD-11 ใช้ระบบ Post-coordination ผูกรหัสกายวิภาคหลัก NC53.0 (กระดูกต้นขาหักชนิดปิด) เข้ากับด้านขวา (Right - XK9K) ได้อย่างสมบูรณ์แบบ แตกต่างกับ ICD-10 ดั้งเดิมที่กำหนดเพียงทศนิยมหยาบและขาดความสามารถในการเชื่อมความสัมพันธ์กับพยาธิวิทยากายวิภาคชั้นลึกอย่างรวดเร็วเหมือน SNOMED"
+            },
+            "breast-cancer": {
+                icd10: "C50.4",
+                icd10Name: "Malignant neoplasm of upper-outer quadrant of breast",
+                icd11: "2C60.1 & XK8M",
+                icd11Name: "Infiltrating duct carcinoma of breast, upper-outer quadrant (Left side)",
+                snomed: "722378009",
+                snomedName: "Malignant neoplasm of left breast (disorder)",
+                desc: "คำอธิบาย: ในเคสมะเร็งเต้านมซ้าย ICD-11 สามารถรวมสายประเภทวิทยาเนื้อเยื่อมะเร็งควบคู่กับข้างซ้ายได้อย่างชัดเจนผ่านรหัสขยายแนวแกน ในขณะที่ SNOMED ให้การสนับสนุนโครงข่ายเชื่อมโยงระบบต่อมน้ำเหลืองและพยาธิสภาพมะเร็งทางคลินิกอย่างครบถ้วน"
+            },
+            "drowning": {
+                icd10: "T75.1 / W74.9",
+                icd10Name: "Drowning and nonfatal submersion / Unspecified drowning",
+                icd11: "NF00.0 & PL10",
+                icd11Name: "Accidental drowning and submersion while in natural water",
+                snomed: "269061009",
+                snomedName: "Drowning (event)",
+                desc: "คำอธิบาย: ICD-11 และ ICD-10 มองในฐานะเหตุการณ์ภายนอกที่เป็นสาเหตุการเสียชีวิตและพยาธิสภาพปอดสัญจรสลบ แต่ออกแบบรหัสโครงสร้างใหม่ของ ICD-11 ได้แบ่งแยกประเภทรองรับสระธรรมชาติ สระว่ายน้ำได้ดีกว่า ส่วน SNOMED มองในฐานะ 'วิกฤตทางกายภาพคลินิก (Event)'"
+            },
+            "hanging": {
+                icd10: "X70.9",
+                icd10Name: "Intentional self-harm by hanging, strangulation and suffocation",
+                icd11: "PA60 & PL12",
+                icd11Name: "Intentional self-harm by hanging, strangulation or suffocation",
+                snomed: "218204008",
+                snomedName: "Hanging (event)",
+                desc: "คำอธิบาย: การลงบันทึกการทำร้ายตนเองต้องการการสืบสาเหตุเชิงพฤติกรรมศาสตร์ ICD-11 มีการคัดกรองรายละเอียดด้านอุปกรณ์ที่ช่วยชี้ประเด็นชัดขึ้น ส่วน SNOMED รักษาพิกัดความสัมพันธ์เหตุร้ายร่วมกับสภาวะขาดอากาศหายใจ"
+            },
+            "mi": {
+                icd10: "I21.0",
+                icd10Name: "Acute transmural myocardial infarction of anterior wall",
+                icd11: "BA41.0",
+                icd11Name: "Acute transmural myocardial infarction of anterior wall",
+                snomed: "57054005",
+                snomedName: "Acute anterior myocardial infarction (disorder)",
+                desc: "คำอธิบาย: โรคกล้ามเนื้อหัวใจขาดเลือดเฉียบพลันผนังหน้า มีความสำคัญเรื่องเวลากู้ชีวิต SNOMED จะเด่นมากเพราะลิงก์หาทางผ่านเส้นเลือดแดงหน้าซ้าย (Left anterior descending artery) ช่วยระบบ CDSS แจ้งเตือนยาละลายลิ่มเลือดได้รวดเร็ว"
+            },
+            "car-accident": {
+                icd10: "V49.5",
+                icd10Name: "Car occupant injured in collision with other motor vehicle, traffic",
+                icd11: "PL14.2 & PB31",
+                icd11Name: "Unspecified motor vehicle traffic accident injuring occupant of car",
+                snomed: "242813004",
+                snomedName: "Accident caused by motor vehicle (event)",
+                desc: "คำอธิบาย: สาเหตุภายนอกเพื่อประเมินความปลอดภัยท้องถนน ICD-11 ลงข้อมูลเชิงสถิติได้อย่างดีเยี่ยมเพื่อการออกแบบมาตรการป้องกันกระทรวงคมนาคม"
+            },
+            "gunshot": {
+                icd10: "T14.1 / X95.9",
+                icd10Name: "Open wound of unspecified body region / Assault by handgun",
+                icd11: "NE80.y & PA91",
+                icd11Name: "Assault by handgun discharge causing open wound of abdomen",
+                snomed: "283545001",
+                snomedName: "Gunshot wound of abdomen (disorder)",
+                desc: "คำอธิบาย: แผลถูกปืนยิงที่หน้าท้อง มีโครงสร้างพยาธิวิทยารุนแรงเฉพาะที่ต้องการผ่าตัดด่วน SNOMED สามารถลิงก์เชื่อมต่อพิกัดอวัยวะภายในช่องท้อง เช่น ลำไส้เล็ก ตับ ที่อาจเสียหายร่วมด้วย"
+            }
+        };
+
+        function runCodingCompare() {
+            const select = document.getElementById('m3-disease-select').value;
+            const data = mappingCaseStudies[select];
+            if (!data) return;
+
+            document.getElementById('m3-icd10-code').innerText = data.icd10;
+            document.getElementById('m3-icd10-name').innerText = data.icd10Name;
+            document.getElementById('m3-icd11-code').innerText = data.icd11;
+            document.getElementById('m3-icd11-name').innerText = data.icd11Name;
+            document.getElementById('m3-snomed-code').innerText = data.snomed;
+            document.getElementById('m3-snomed-name').innerText = data.snomedName;
+            document.getElementById('m3-conceptual-desc').innerText = data.desc;
+        }
+
+        // Module 4: 10 Cybersecurity threats log dictionary
+        const cyberThreatsDB = {
+            ransomware: {
+                title: "Ransomware (มัลแวร์ขู่ค่าไถ่)",
+                desc: "กลไก: แฮกเกอร์แอบแฝงเข้ามาในระบบฐานข้อมูลเวชระเบียนโรงพยาบาล สั่งคัดลอกไฟล์แล้วล็อกเข้ารหัสแบบกู้คืนยาก ส่งผลให้ระบบประมวลภาพและคำสั่งยาหยุดชะงักอย่างกระทันหันและเรียกร้องค่าไถ่",
+                logs: [
+                    "[*]: Identified victim target portal: 10.120.4.59 (Active HIS Directory)",
+                    "[*]: Deploying cryptor payload 'hospital-locker.exe'...",
+                    "[*]: Scanning local drive C:\\ for DICOM (.dcm) files...",
+                    "[WARNING]: Encrypting 'SOMCHAI_CT_CHEST.dcm' with AES-256",
+                    "[WARNING]: Encrypting 'PATIENTS_SQL_BACKUP.sql'...",
+                    "[FATAL]: 18,240 critical health files locked!",
+                    "[ALERT]: Ransom instruction file 'HOW_TO_DECRYPT.txt' generated.",
+                    "[*]: Request: 15 Bitcoins for decryption key."
+                ],
+                prevention: "จัดทำระบบสำรองข้อมูลแบบออฟไลน์แยกส่วนทางระบบเครือข่าย (Offline Air-gapped Backups)"
+            },
+            malware: {
+                title: "Spyware / Keylogger (มัลแวร์ดักฟังสะกดรอย)",
+                desc: "กลไก: แฝงตัวเข้าไปในคอมพิวเตอร์หน้าหอผู้ป่วย คอยบันทึกความเคลื่อนไหวทางพฤติกรรม เช่น การกดพิมพ์รหัสผ่านเพื่อสัญจรส่งต่อไปยังเครือข่ายนอกประเทศ",
+                logs: [
+                    "[*]: Active process injected in kernel: 'winlogon-update.exe'",
+                    "[*]: Hooking windows keystroke listener APIs...",
+                    "[CAPTURE]: Typed key detected: 'doctor.somchai@hospital.go.th'",
+                    "[CAPTURE]: Typed key detected: 'password: DrSomchaiSecure2026'",
+                    "[*]: Transferring credentials list to destination C2 server: http://hack-c2.ru/api/logs"
+                ],
+                prevention: "การเปิดใช้ระบบสแกนปลายทาง (Endpoint Detection and Response - EDR) และยืนยันตัวตนหลายขั้นตอน"
+            },
+            virus: {
+                title: "Computer Virus (ไวรัสเจาะทำลายไฟล์ข้อมูล)",
+                desc: "กลไก: มัลแวร์แนบสอดรหัสพยาธิเข้ากับโปรแกรมปฏิบัติงานหลักของแพทย์ เมื่อถูกรันจะทำการสร้างความล้มเหลวเสียหายให้แก่ระบบหน่วยความจำ",
+                logs: [
+                    "[*]: Executing corrupted program 'HIS_Client_Updater.exe'",
+                    "[*]: Replicating malicious blocks to neighboring executables...",
+                    "[ERROR]: System integrity verification failed on billing.exe!",
+                    "[CRITICAL]: Blue Screen of Death (BSOD) triggered on terminal due to memory corruption"
+                ],
+                prevention: "การเปิดโปรแกรมป้องกันไวรัสระดับเครื่องและบล็อกสิทธิไฟล์ภายนอก"
+            },
+            worm: {
+                title: "Network Worm (หนอนเครือข่ายแพร่กระจายอิสระ)",
+                desc: "กลไก: มัลแวร์คอยสแกนพอร์ตเครือข่ายโรงพยาบาลแบบสุ่ม วิ่งข้ามไปปิดเครื่องมือเตียงไอซียูได้เองโดยไม่ต้องอาศัยการกดคลิกเปิดจากพยาบาล",
+                logs: [
+                    "[*]: Scanning network range 10.150.0.0/16...",
+                    "[*]: Vulnerability found: CVE-2017-0144 (EternalBlue) on 10.150.2.8 (ICU Patient Monitor)",
+                    "[*]: Transmitting exploit payload to target...",
+                    "[SUCCESS]: Worm active on target monitor. Initiating next subnet scanning..."
+                ],
+                prevention: "การจัดการติดตั้งแพตช์ความปลอดภัยด่วน และแบ่งกลุ่มวงจร VLAN เน็ตเวิร์กแยกชัดเจน"
+            },
+            trojan: {
+                title: "Trojan Horse (ม้าโทรจันหลอกลวงสิทธิ)",
+                desc: "กลไก: แสร้งส่งโปรแกรมที่แพทย์ต้องการใช้งาน เช่น 'เครื่องมือกดดูฟิล์มรังสีแบบพกพาฟรี' แต่เบื้องหลังแอบสร้าง Backdoor ทะลวงระบบภายในเข้ามา",
+                logs: [
+                    "[*]: User installed: 'Free_DICOM_Viewer_3D.exe'",
+                    "[*]: Installing dummy frontend app to distract user...",
+                    "[*]: Opening background listening port 4444 (Reverse Shell)...",
+                    "[SUCCESS]: Established shell connection to remote attacker IP: 198.51.100.8"
+                ],
+                prevention: "นโยบายเข้มงวดไม่ติดตั้งโปรแกรมนอกที่ทีมไอทีไม่ได้รับรองสิทธิ์ใช้งาน"
+            },
+            ddos: {
+                title: "DDoS Attack (ถล่มระบบจองคิวออนไลน์ล่ม)",
+                desc: "กลไก: ส่งข้อมูลขยะปริมาณมหาศาลจาก Botnet ทั่วโลกไปที่เซิร์ฟเวอร์จองคิวนัดตรวจคนไข้จนทำให้ทรัพยากรเต็มและล่มใช้งานไม่ได้",
+                logs: [
+                    "[*]: Monitoring patient portal incoming traffic...",
+                    "[*]: Influx of requests detected: 145,000 requests/sec from 12,000 distinct IPs",
+                    "[WARNING]: Server CPU usage at 100%. RAM allocation limit reached.",
+                    "[ERROR]: HTTP 503 Service Unavailable - Server unable to respond."
+                ],
+                prevention: "ใช้งานระบบกรองล้างข้อขยะกลางทาง (Cloud Scrubbing / DDoS Protection) และจำกัดการเข้าถึงปริมาณหน้าต่าง"
+            },
+            phishing: {
+                title: "Phishing (เบ็ดลวงวิศวกรรมสังคมถามสิทธิ์)",
+                desc: "กลไก: การส่งข้อความด่วนหลอกลวงอ้างเป็นฝ่ายไอทีโรงพยาบาล ชี้ประเด็นด่วนเรื่องความเสี่ยงระบบปิดใช้งานเพื่อให้แพทย์ไปกดกรอกรหัสผ่านเข้าหน้าเว็บลวงตา",
+                logs: [
+                    "[*]: Delivery of spoofed mail 'admin@gmai1-moph.com' to physicians...",
+                    "[*]: Subject: '[URGENT] Verify your password within 2 hours or account suspends'",
+                    "[*]: Redirect URL: 'https://security-portal-hospitals.temp.sh/login'",
+                    "[*]: Awaiting targets to fill and compromise credentials..."
+                ],
+                prevention: "การสังเกตชื่อผู้ส่งและสัญจรโดเมนปลายทางอย่างมีระเบียบ"
+            },
+            mitm: {
+                title: "Man-in-the-Middle (ดักข้อมูลดักดึงระบบกลาง)",
+                desc: "กลไก: แอบเข้าไปเชื่อมต่อ Wi-Fi ทั่วไปของโรงพยาบาลและดักสกัดข้อมูลสัญจรสื่อสารของคนไข้ที่ไม่ได้รับการเข้ารหัสแบบมาตรฐานปลอดภัย",
+                logs: [
+                    "[*]: Launching ARP poisoning on public access point...",
+                    "[*]: Intercepting unencrypted HTTP / HL7 message streams...",
+                    "[DATA DECODED]: PID|1||HN6942059||นายสมชาย ใจดี||19850529|M",
+                    "[DATA DECODED]: OBX|1|TX|HIV_TEST||Positive||||||F"
+                ],
+                prevention: "การบังคับใช้อุปกรณ์เข้ารหัสความปลอดภัย HTTPS / TLS และใช้งาน VPN ในการทำงานนอกโรงพยาบาล"
+            },
+            sqli: {
+                title: "SQL Injection (เจาะจ้วงฐานข้อมูลหลังบ้าน)",
+                desc: "กลไก: ป้อนประพจน์ตรรกะคอมพิวเตอร์เข้าฟิลด์ล็อคอินเพื่อหลอกให้ฐานข้อมูลหลังบ้านส่งข้อมูลสัญจรของผู้ใช้ทั้งหมดหลุดสัญจรออกมา",
+                logs: [
+                    "[*]: Targeted web portal: https://his.hospital.go.th/login",
+                    "[*]: Injected payload into login form: ' OR '1'='1' --",
+                    "[*]: Internal query: SELECT * FROM USERS WHERE username='' OR '1'='1' --",
+                    "[SUCCESS]: Bypassed authentication. User database access granted!"
+                ],
+                prevention: "การใช้งานแนวทางการเตรียมเขียนคำสั่งสัญจรสำเร็จรูป (Prepared Statements) ป้องกันช่องว่าง"
+            },
+            bruteforce: {
+                title: "Brute Force Attack (เครื่องลองสุ่มเดารหัสอัตโนมัติ)",
+                desc: "กลไก: ซอฟต์แวร์เครื่องมือเดารหัสผ่านซ้ำๆ ด้วยพจนานุกรมรหัสผ่านที่คนชอบใช้ทั่วไปจนกระทั่งเจาะสิทธิ์เข้าถึงพอร์ทัลหลักของแพทย์ได้สำเร็จ",
+                logs: [
+                    "[*]: Attacking API endpoint: /auth/login for user 'dr.somchai'",
+                    "[*]: Attempt 001: '12345678' -> Access Denied",
+                    "[*]: Attempt 042: 'somchai123' -> Access Denied",
+                    "[*]: Attempt 119: 'DrSomchai2026' -> ACCESS GRANTED!",
+                    "[WARNING]: Suspicious successful login from untrusted IP country"
+                ],
+                prevention: "การใช้ระบบจำกัดการพิมพ์รหัสล้มเหลว (Account Lockout) และการบังคับระบุตัวตนแบบ MFA"
+            }
+        };
+
+        let selectedCyberId = 'ransomware';
+
+        function selectCyberAttack(id) {
+            selectedCyberId = id;
+            const data = cyberThreatsDB[id];
+            if (!data) return;
+
+            // Update Active UI selector state
+            const buttons = document.querySelectorAll('.cyber-menu-btn');
+            buttons.forEach(b => {
+                b.classList.remove('bg-pastel-100', 'text-pastel-800', 'border-l-2', 'border-pastel-600');
+                b.classList.add('text-slate-500');
+            });
+
+            const current = document.getElementById('cyber-btn-' + id);
+            if (current) {
+                current.classList.add('bg-pastel-100', 'text-pastel-800', 'border-l-2', 'border-pastel-600');
+                current.classList.remove('text-slate-500');
+            }
+
+            document.getElementById('cyber-attack-title').innerText = data.title;
+            document.getElementById('cyber-attack-desc').innerText = data.desc;
+            document.getElementById('cyber-prevention-txt').innerText = data.prevention;
+        }
+
+        function startAttackSimulation() {
+            const data = cyberThreatsDB[selectedCyberId];
+            if (!data) return;
+
+            const logsDiv = document.getElementById('cyber-console-logs');
+            logsDiv.innerHTML = `$ target scan initialized: executing ${selectedCyberId}...\n`;
+            
+            let i = 0;
+            function printLine() {
+                if (i < data.logs.length) {
+                    logsDiv.innerHTML += `${data.logs[i]}\n`;
+                    i++;
+                    setTimeout(printLine, 350);
+                } else {
+                    logsDiv.innerHTML += `$ simulator: execution finished.\n`;
+                }
+                const cDiv = document.getElementById('cyber-console');
+                cDiv.scrollTop = cDiv.scrollHeight;
+            }
+            printLine();
+        }
+
+        function cyberLabClearConsole() {
+            document.getElementById('cyber-console-logs').innerHTML = `$ system_status: awaiting_commands_`;
+        }
+
+        // Module 5: CDSS Clinical Decision Support system
+        function runCDSSEngine() {
+            const pt = document.getElementById('m5-cdss-pt').value;
+            const drug = document.getElementById('m5-cdss-drug').value;
+            const alertsBox = document.getElementById('m5-cdss-alerts-box');
+
+            if (pt === 'none' || drug === 'none') {
+                alertsBox.className = "p-4 rounded-lg bg-white border border-pastel-150 text-xs text-slate-400 min-h-[110px] flex items-center justify-center text-center leading-relaxed";
+                alertsBox.innerHTML = "กรุณาคลิกเลือกจับคู่คนไข้และยากับตัวเลือกทางซ้ายมือ เพื่อส่งสัญญาณไปประมวลผลข้อกฎความปลอดภัยทันที";
+                return;
+            }
+
+            if (pt === 'pt-ckd' && drug === 'ibuprofen') {
+                alertsBox.className = "p-4 rounded-lg bg-red-50 border border-red-200 text-red-800 text-xs leading-relaxed space-y-1";
+                alertsBox.innerHTML = `
+                    <div class="font-bold text-red-700 flex items-center gap-1.5"><i class="fa-solid fa-triangle-exclamation"></i> [วิกฤต] ข้อห้ามจ่ายยาคู่พยาธิสภาพเสี่ยงสูง (Contraindication)</div>
+                    <strong>นายสมชัย</strong> เป็นผู้ป่วยไตวายเรื้อรังระยะที่ 4 การจ่ายยาแก้อักเสบกลุ่ม <strong>NSAIDs (Ibuprofen)</strong> จะส่งผลให้หลอดเลือดฝอยในหน่วยไตหดเกร็งเฉียบพลันและนำไปสู่ภาวะไตวายถาวรได้โดยง่าย ระบบแนะนำระงับใบสั่งยานี้ในเวชระเบียน
+                `;
+            } else if (pt === 'pt-peds' && drug === 'ibuprofen') {
+                alertsBox.className = "p-4 rounded-lg bg-yellow-50 border border-yellow-200 text-yellow-900 text-xs leading-relaxed space-y-1";
+                alertsBox.innerHTML = `
+                    <div class="font-bold text-yellow-800 flex items-center gap-1.5"><i class="fa-solid fa-circle-exclamation"></i> [แจ้งเตือน] เฝ้าระวังความปลอดภัยเด็กเล็ก (Pediatric Precaution)</div>
+                    ผู้รับบริการคือเด็กอายุ 4 ปี ต้องสงสัยการติดเชื้อไข้หวัดใหญ่ การใช้ยากลุ่ม Ibuprofen แม้ระงับไข้ได้รวดเร็วแต่มีความจำเป็นในการควบคุมความชุ่มชื้นและปริมาณน้ำดื่มเป็นอย่างยิ่ง แนะนำเช็ดตัวลดไข้ประยุกต์ควบคู่ไปกับการพิจารณายาสามัญ
+                `;
+            } else if (pt === 'pt-cardiac' && drug === 'clarithro') {
+                alertsBox.className = "p-4 rounded-lg bg-red-50 border border-red-200 text-red-800 text-xs leading-relaxed space-y-1";
+                alertsBox.innerHTML = `
+                    <div class="font-bold text-red-700 flex items-center gap-1.5"><i class="fa-solid fa-circle-xmark"></i> [รุนแรงระดับสูงสุด] ปฏิกิริยาขัดแย้งของยาปะทะยา (Drug-Drug Interaction)</div>
+                    ผู้ป่วยทานยารักษาระดับการเต้นหัวใจ <strong>Amiodarone</strong> การเพิ่มยาฆ่าเชื้อกลุ่มแมคโครไลด์ <strong>Clarithromycin</strong> จะเข้าไปกระตุ้นให้ช่วงการนำไฟฟ้าหัวใจยาวนานผิดปกติ (QT Prolongation) โน้มนำให้เกิดหัวใจห้องล่างเต้นพลิ้วมรณะเฉียบพลัน (Torsades de Pointes) ระบบระงับคำสั่งยานี้ทันที!
+                `;
+            } else {
+                alertsBox.className = "p-4 rounded-lg bg-pastel-50 border border-pastel-200 text-pastel-800 text-xs leading-relaxed space-y-1";
+                alertsBox.innerHTML = `
+                    <div class="font-bold text-pastel-700 flex items-center gap-1.5"><i class="fa-solid fa-circle-check"></i> [ผ่านการคัดกรอง] ยามีความปลอดภัยในการใช้งาน (Approved)</div>
+                    ระบบคัดกรอง CDSS จับคู่วินิจฉัยกับประวัติสัญจรผู้ป่วยแล้วไม่พบปฏิกิริยาหรือข้อบ่งชี้คัดค้านในการรักษา ยินยอมให้แพทย์ยืนยันใบสั่งยาได้
+                `;
+            }
+        }
+
+        // Module 5: AI Diagnostics logic
+        function m5TriggerAI(type) {
+            const h = document.getElementById('m5-ai-heatmap');
+            const cls = document.getElementById('m5-ai-class');
+            const conf = document.getElementById('m5-ai-conf');
+            const heart = document.getElementById('m5-xray-heart');
+
+            h.style.opacity = '1';
+
+            if (type === 'pneumonia') {
+                cls.innerText = "Pneumonia (ปอดอักเสบติดเชื้อ)";
+                conf.innerText = "94.2% Confidence";
+                heart.style.transform = "scale(1)";
+                
+                h.style.left = "42px";
+                h.style.top = "52px";
+                h.style.background = "radial-gradient(circle, rgba(239,68,68,0.7) 0%, rgba(239,68,68,0) 80%)";
+            } else if (type === 'cardiomegaly') {
+                cls.innerText = "Cardiomegaly (ภาวะหัวใจโต)";
+                conf.innerText = "91.8% Confidence";
+                heart.style.transform = "scale(1.4)";
+                
+                h.style.left = "85px";
+                h.style.top = "65px";
+                h.style.background = "radial-gradient(circle, rgba(59,130,246,0.7) 0%, rgba(59,130,246,0) 80%)";
+            }
+        }
+
+        function m5ResetAI() {
+            document.getElementById('m5-ai-heatmap').style.opacity = '0';
+            document.getElementById('m5-ai-class').innerText = "รอเริ่มคัดกรอง...";
+            document.getElementById('m5-ai-conf').innerText = "-";
+            document.getElementById('m5-xray-heart').style.transform = "scale(1)";
+        }
+
+        // Module 5: Remote IoT Telemetry ECG Live drawing
+        let ecgCanvas, ecgCtx;
+        let animationFrameId;
+        let ecgOffset = 0;
+        let iotStatus = 'normal'; // 'normal' or 'sepsis'
+
+        function initECGCanvas() {
+            ecgCanvas = document.getElementById('m5-ecg-canvas');
+            if (!ecgCanvas) return;
+
+            ecgCtx = ecgCanvas.getContext('2d');
+            ecgCanvas.width = ecgCanvas.parentElement.clientWidth;
+            ecgCanvas.height = ecgCanvas.parentElement.clientHeight;
+
+            if (animationFrameId) cancelAnimationFrame(animationFrameId);
+            renderECG();
+        }
+
+        function renderECG() {
+            if (!ecgCtx) return;
+            ecgCtx.clearRect(0, 0, ecgCanvas.width, ecgCanvas.height);
+
+            // Grid background lines
+            ecgCtx.strokeStyle = '#223c2a';
+            ecgCtx.lineWidth = 0.5;
+            for(let x=0; x<ecgCanvas.width; x+=16) {
+                ecgCtx.beginPath();
+                ecgCtx.moveTo(x, 0);
+                ecgCtx.lineTo(x, ecgCanvas.height);
+                ecgCtx.stroke();
+            }
+            for(let y=0; y<ecgCanvas.height; y+=16) {
+                ecgCtx.beginPath();
+                ecgCtx.moveTo(0, y);
+                ecgCtx.lineTo(ecgCanvas.width, y);
+                ecgCtx.stroke();
+            }
+
+            // Draw Signal waves
+            ecgCtx.strokeStyle = iotStatus === 'normal' ? '#a3e2c3' : '#f43f5e';
+            ecgCtx.lineWidth = 1.8;
+            ecgCtx.beginPath();
+
+            let speed = iotStatus === 'normal' ? 2 : 5;
+            ecgOffset = (ecgOffset + speed) % ecgCanvas.width;
+
+            for(let i=0; i<ecgCanvas.width; i++) {
+                let x = i;
+                let y = ecgCanvas.height / 2;
+                
+                let pulseInterval = iotStatus === 'normal' ? 80 : 40;
+                let phase = (i - ecgOffset) % pulseInterval;
+                
+                if (phase > 8 && phase < 11) { // P Wave
+                    y -= 6;
+                } else if (phase >= 11 && phase < 13) { // Q Wave
+                    y += 3;
+                } else if (phase >= 13 && phase < 16) { // R Spike (QRS Complex)
+                    y -= 36;
+                } else if (phase >= 16 && phase < 18) { // S Wave
+                    y += 12;
+                } else if (phase >= 23 && phase < 30) { // T Wave
+                    y -= 8;
+                }
+
+                // Add small noise
+                y += Math.sin(i * 0.2) * 0.6;
+
+                if (i === 0) ecgCtx.moveTo(x, y);
+                else ecgCtx.lineTo(x, y);
+            }
+            ecgCtx.stroke();
+
+            // Scrolling sweep sweep line indicator
+            ecgCtx.fillStyle = 'rgba(15, 23, 42, 0.2)';
+            ecgCtx.fillRect(ecgOffset, 0, 16, ecgCanvas.height);
+
+            animationFrameId = requestAnimationFrame(renderECG);
+        }
+
+        function m5SimulateIot(status) {
+            iotStatus = status;
+            const hr = document.getElementById('m5-iot-hr');
+            const spo2 = document.getElementById('m5-iot-spo2');
+            const alarm = document.getElementById('m5-iot-alarm-box');
+
+            if (status === 'normal') {
+                hr.innerText = "72 bpm";
+                hr.className = "text-xl font-bold text-pastel-700";
+                spo2.innerText = "98%";
+                spo2.className = "text-xl font-bold text-pastel-700";
+
+                alarm.className = "p-4 rounded-xl bg-white border border-pastel-200 text-center text-xs font-semibold flex items-center justify-center min-h-[90px] text-pastel-700 leading-relaxed shadow-sm";
+                alarm.innerHTML = `
+                    <div>
+                        <i class="fa-solid fa-circle-check text-pastel-600 text-lg block mb-1"></i>
+                        สัญญาณชีพอยู่ในระดับคงที่ (Normal)
+                    </div>
+                `;
+            } else if (status === 'sepsis') {
+                hr.innerText = "142 bpm";
+                hr.className = "text-xl font-bold text-red-500 animate-pulse";
+                spo2.innerText = "87%";
+                spo2.className = "text-xl font-bold text-red-500 animate-pulse";
+
+                alarm.className = "p-4 rounded-xl bg-red-50 border border-red-200 text-center text-xs font-bold flex items-center justify-center min-h-[90px] text-red-700 leading-relaxed shadow-sm";
+                alarm.innerHTML = `
+                    <div>
+                        <i class="fa-solid fa-triangle-exclamation text-red-500 text-lg block mb-1 animate-ping"></i>
+                        CRITICAL HYPOXIA / SEPSIS ALARM!
+                        <span class="text-[9px] block text-slate-400 mt-1">กรุณาแจ้งฝ่ายแพทย์กู้ชีพและพยาบาลช่วยชีวิตด่วน</span>
+                    </div>
+                `;
+            }
+        }
+
+        // Initialize state on load
+        window.onload = function() {
+            switchTab('intro');
+            load43FilesGrid();
+            runCodingCompare();
+            selectCyberAttack('ransomware');
+            window.addEventListener('resize', initECGCanvas);
+        }
+    </script>
+</body>
+</html>
