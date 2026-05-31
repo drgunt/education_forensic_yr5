@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>กระบวนวิชานิติเวชศาสตร์ 499614 - โรงพยาบาลพุทธชินราช</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Kanit for Thai medical feel -->
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Font Scaling variable system */
+        :root {
+            --font-scale: 1.0;
+            --primary-pastel: #2d5a27;
+            --primary-bg: #f4fbf6;
+            --accent-green: #e1efe6;
+            --mint-light: #f0f7f3;
+            --text-dark: #1e2c22;
+        }
+
+        body {
+            font-family: 'Kanit', sans-serif;
+            background-color: var(--primary-bg);
+            color: var(--text-dark);
+            font-size: calc(1rem * var(--font-scale)) !important;
+            transition: all 0.2s ease;
+        }
+
+        /* Scaled fonts for components to ensure resizing works absolutely */
+        .text-scale-h1 { font-size: calc(1.8rem * var(--font-scale)) !important; line-height: 1.2; }
+        .text-scale-h2 { font-size: calc(1.4rem * var(--font-scale)) !important; line-height: 1.3; }
+        .text-scale-h3 { font-size: calc(1.15rem * var(--font-scale)) !important; line-height: 1.4; }
+        .text-scale-body { font-size: calc(1rem * var(--font-scale)) !important; }
+        .text-scale-sm { font-size: calc(0.85rem * var(--font-scale)) !important; }
+        .text-scale-lg { font-size: calc(1.1rem * var(--font-scale)) !important; }
+
+        /* Smooth scroll custom offsets */
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 140px;
+        }
+
+        /* Hide scrollbars for navigation horizontal flow */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        /* Custom active styling for links */
+        .tab-active {
+            background-color: #2d5a27 !important;
+            color: white !important;
+            box-shadow: 0 4px 6px -1px rgba(45, 90, 39, 0.2);
+        }
+    </style>
+</head>
+<body class="pb-16 min-h-screen">
+
+    <!-- TOP HEADER (Fixed on mobile/desktop) -->
+    <header class="sticky top-0 z-50 bg-white border-b border-emerald-100 shadow-sm">
+        <div class="max-w-4xl mx-auto px-4 py-3 flex flex-col md:flex-row items-center justify-between gap-3">
+            <div class="text-center md:text-left">
+                <span class="bg-emerald-100 text-emerald-800 text-xs font-semibold px-2.5 py-0.5 rounded-full">กองนิติเวชศาสตร์</span>
+                <h1 class="text-scale-h2 font-bold text-emerald-950 mt-1">กระบวนวิชานิติเวชศาสตร์ (499614)</h1>
+                <p class="text-scale-sm text-emerald-700 font-medium">กลุ่มงานนิติเวช โรงพยาบาลพุทธชินราชพิษณุโลก</p>
+            </div>
+            
+            <!-- FONT CONTROLLER & STATUS -->
+            <div class="flex items-center gap-2 bg-emerald-50 p-2 rounded-xl border border-emerald-100">
+                <span class="text-scale-sm text-emerald-800 font-medium mr-1">ขนาดตัวอักษร:</span>
+                <button onclick="changeFontSize(-0.1)" class="w-8 h-8 flex items-center justify-center bg-white border border-emerald-200 text-emerald-800 font-bold rounded-lg hover:bg-emerald-100 active:scale-95 transition-all text-sm">A-</button>
+                <span id="font-indicator" class="text-scale-sm font-semibold text-emerald-900 min-w-[40px] text-center">100%</span>
+                <button onclick="changeFontSize(0.1)" class="w-8 h-8 flex items-center justify-center bg-white border border-emerald-200 text-emerald-800 font-bold rounded-lg hover:bg-emerald-100 active:scale-95 transition-all text-sm">A+</button>
+                <button onclick="resetFontSize()" class="text-scale-sm px-2 py-1 bg-emerald-800 text-white rounded-md text-xs font-medium hover:bg-emerald-900">ปกติ</button>
+            </div>
+        </div>
+
+        <!-- HORIZONTAL SWIPEABLE NAVIGATION -->
+        <div class="bg-emerald-50 border-t border-emerald-100 overflow-x-auto no-scrollbar">
+            <div class="max-w-4xl mx-auto px-2 flex space-x-1 py-2 min-w-max">
+                <button onclick="switchTab('specification')" id="btn-specification" class="nav-tab-btn px-4 py-2 rounded-lg text-emerald-900 font-medium transition-all text-scale-sm hover:bg-emerald-100">แผนการสอน / คณาจารย์</button>
+                <button onclick="switchTab('orientation')" id="btn-orientation" class="nav-tab-btn px-4 py-2 rounded-lg text-emerald-900 font-medium transition-all text-scale-sm hover:bg-emerald-100">Orientation Slide</button>
+                <button onclick="switchTab('forms')" id="btn-forms" class="nav-tab-btn px-4 py-2 rounded-lg text-emerald-900 font-medium transition-all text-scale-sm hover:bg-emerald-100">เอกสารดาวน์โหลด & ตำรา</button>
+                <button onclick="switchTab('reports')" id="btn-reports" class="nav-tab-btn px-4 py-2 rounded-lg text-emerald-900 font-medium transition-all text-scale-sm hover:bg-emerald-100">ตรวจสอบรายงาน & ฝึกกรอกฟอร์ม</button>
+                <button onclick="switchTab('tos')" id="btn-tos" class="nav-tab-btn px-4 py-2 rounded-lg text-emerald-900 font-medium transition-all text-scale-sm hover:bg-emerald-100">เนื้อหาบรรยาย (TOS)</button>
+                <button onclick="switchTab('quiz')" id="btn-quiz" class="nav-tab-btn px-4 py-2 rounded-lg text-emerald-900 font-medium transition-all text-scale-sm hover:bg-emerald-100">ข้อสอบจำลอง</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN BODY CONTAINER -->
+    <main class="max-w-4xl mx-auto px-4 mt-6">
+
+        <!-- ======================= SECTION 1: แผนการสอน & คณาจารย์ ======================= -->
+        <section id="sec-specification" class="tab-content block space-y-6">
+            <!-- Course Basic Card -->
+            <div class="bg-white rounded-2xl p-6 border border-emerald-100 shadow-sm relative overflow-hidden">
+                <div class="absolute right-0 top-0 w-32 h-32 bg-emerald-50 rounded-full translate-x-10 -translate-y-10 -z-10 opacity-60"></div>
+                <h2 class="text-scale-h2 font-bold text-emerald-950 border-b pb-3 border-emerald-50 mb-4 flex items-center gap-2">
+                    <span class="p-1.5 bg-emerald-100 rounded-lg text-emerald-800">📋</span> แผนการสอนกระบวนวิชา (Course Specification)
+                </h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-scale-body mb-4">
+                    <div class="bg-emerald-50/50 p-4 rounded-xl border border-emerald-50">
+                        <p class="text-emerald-800 font-semibold">โครงสร้างกระบวนวิชา</p>
+                        <p class="text-emerald-950 font-bold text-scale-lg">499614 : 2 (1-2-3)</p>
+                        <p class="text-emerald-700 text-scale-sm mt-1">นิสิตแพทย์ชั้นปีที่ 5 ประจำปีการศึกษา 2566</p>
+                    </div>
+                    <div class="bg-emerald-50/50 p-4 rounded-xl border border-emerald-50">
+                        <p class="text-emerald-800 font-semibold">ชั่วโมงกิจกรรมการเรียนรู้</p>
+                        <ul class="list-disc pl-5 text-emerald-900 text-scale-sm mt-1">
+                            <li>การบรรยายในชั้นเรียน (Lecture): 15 ชม.</li>
+                            <li>การฝึกปฏิบัติการทางนิติเวช (Practice): 30 ชม.</li>
+                            <li>เรียนรู้ด้วยตนเองนอกเวลา (SDL): 45 ชม.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="bg-yellow-50 border border-yellow-200 rounded-xl p-4 text-scale-body mb-6">
+                    <h3 class="font-bold text-yellow-900 flex items-center gap-1.5">⚖️ คำอธิบายรายวิชา (Course Description)</h3>
+                    <p class="text-yellow-950 text-scale-sm mt-1 leading-relaxed">
+                        กฎหมายที่เกี่ยวข้องกับการแพทย์และการประกอบวิชาชีพของแพทย์ หลักการและวิธีพิสูจน์ข้อเท็จจริงทางการแพทย์ เพื่อช่วยแก้ปัญหาทางกฎหมายทั้งในการตรวจผู้ป่วยทางนิติเวชศาสตร์ การชันสูตรพลิกศพ การตรวจหาสารพิษในสิ่งส่งตรวจจากผู้ป่วยหรือศพ การตรวจวัตถุพยานในคดีทางเพศและวัตถุพยานอื่น ๆ
+                    </p>
+                </div>
+
+                <!-- Grading / Evaluation -->
+                <h3 class="font-bold text-emerald-900 mb-3 text-scale-lg">📊 สัดส่วนและรูปแบบการประเมินคะแนน (รวม 100%)</h3>
+                <div class="overflow-x-auto rounded-xl border border-emerald-100 mb-4">
+                    <table class="w-full text-scale-sm text-left">
+                        <thead>
+                            <tr class="bg-emerald-800 text-white">
+                                <th class="p-3 font-semibold">วิธีการประเมินผล</th>
+                                <th class="p-3 font-semibold text-center">สัดส่วนคะแนน</th>
+                                <th class="p-3 font-semibold">ช่วงเวลาดำเนินงาน</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-emerald-50 bg-white">
+                            <tr class="hover:bg-emerald-50/50">
+                                <td class="p-3 font-medium text-emerald-950">1. การสอบปรนัยประมวลความรู้ (MCQ 60 ข้อ)</td>
+                                <td class="p-3 text-center font-bold text-emerald-800">40 %</td>
+                                <td class="p-3 text-emerald-700">สอบปลายภาคบล็อกการเรียน</td>
+                            </tr>
+                            <tr class="hover:bg-emerald-50/50">
+                                <td class="p-3 font-medium text-emerald-950">2. สอบปฏิบัติการทางนิติเวชศาสตร์ (OSCE 4 ข้อ)</td>
+                                <td class="p-3 text-center font-bold text-emerald-800">20 %</td>
+                                <td class="p-3 text-emerald-700">สอบบ่ายวันศุกร์สุดท้ายของกอง</td>
+                            </tr>
+                            <tr class="hover:bg-emerald-50/50">
+                                <td class="p-3 font-medium text-emerald-950">3. รายงานการชันสูตรพลิกศพ (1 ศพ) + ใบรับรองการตาย</td>
+                                <td class="p-3 text-center font-bold text-emerald-800">20 %</td>
+                                <td class="p-3 text-emerald-700">ก่อน 23.59 น. วันจันทร์ถัดไป</td>
+                            </tr>
+                            <tr class="hover:bg-emerald-50/50">
+                                <td class="p-3 font-medium text-emerald-950">4. รายงานชันสูตรบาดแผลคนไข้คดี OPD (1 ราย)</td>
+                                <td class="p-3 text-center font-bold text-emerald-800">10 %</td>
+                                <td class="p-3 text-emerald-700">ก่อน 23.59 น. วันจันทร์ถัดไป</td>
+                            </tr>
+                            <tr class="hover:bg-emerald-50/50">
+                                <td class="p-3 font-medium text-emerald-950">5. รายงานและงานนำเสนอ Case Study Conference</td>
+                                <td class="p-3 text-center font-bold text-emerald-800">10 %</td>
+                                <td class="p-3 text-emerald-700">นำเสนอผลงานตามรอบนัดหมาย</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Faculty Section -->
+            <div class="bg-white rounded-2xl p-6 border border-emerald-100 shadow-sm">
+                <h2 class="text-scale-h2 font-bold text-emerald-950 border-b pb-3 border-emerald-50 mb-4 flex items-center gap-2">
+                    <span class="p-1.5 bg-emerald-100 rounded-lg text-emerald-800">👩‍⚕️</span> คณะคณาจารย์ผู้สอนและควบคุมกองวิชา
+                </h2>
+                <p class="text-scale-body text-emerald-800 mb-4">กลุ่มงานนิติเวช โรงพยาบาลพุทธชินราชพิษณุโลก และเครือข่ายสถาบันร่วมสอน:</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Faculty Item 1 -->
+                    <div class="flex items-start gap-3 p-4 bg-emerald-50/50 border border-emerald-100 rounded-xl">
+                        <div class="w-12 h-12 bg-emerald-200 text-emerald-800 rounded-full flex items-center justify-center font-bold text-scale-lg shrink-0">ก</div>
+                        <div>
+                            <h4 class="font-bold text-emerald-950 text-scale-body">นพ. กันต์ ทองแถม ณ อยุธยา</h4>
+                            <p class="text-emerald-800 text-scale-sm">โรงพยาบาลพุทธชินราชพิษณุโลก</p>
+                            <span class="inline-block mt-1 bg-emerald-800 text-white text-[10px] px-2 py-0.5 rounded-full font-medium">คณาจารย์หัวหน้ากองนิติเวช</span>
+                        </div>
+                    </div>
+                    <!-- Faculty Item 2 -->
+                    <div class="flex items-start gap-3 p-4 bg-emerald-50/50 border border-emerald-100 rounded-xl">
+                        <div class="w-12 h-12 bg-emerald-200 text-emerald-800 rounded-full flex items-center justify-center font-bold text-scale-lg shrink-0">ช</div>
+                        <div>
+                            <h4 class="font-bold text-emerald-950 text-scale-body">นพ. เชาวกิจ ศรีเมืองวงค์</h4>
+                            <p class="text-emerald-800 text-scale-sm">โรงพยาบาลพุทธชินราชพิษณุโลก</p>
+                            <span class="inline-block mt-1 bg-emerald-800 text-white text-[10px] px-2 py-0.5 rounded-full font-medium">อาจารย์แพทย์เฉพาะทางนิติเวช</span>
+                        </div>
+                    </div>
+                    <!-- Faculty Item 3 -->
+                    <div class="flex items-start gap-3 p-4 bg-emerald-50/50 border border-emerald-100 rounded-xl">
+                        <div class="w-12 h-12 bg-emerald-200 text-emerald-800 rounded-full flex items-center justify-center font-bold text-scale-lg shrink-0">ณ</div>
+                        <div>
+                            <h4 class="font-bold text-emerald-950 text-scale-body">นพ. ณัฐสิทธิ์ เจริญสันติ</h4>
+                            <p class="text-emerald-800 text-scale-sm">โรงพยาบาลพุทธชินราชพิษณุโลก</p>
+                            <span class="inline-block mt-1 bg-emerald-800 text-white text-[10px] px-2 py-0.5 rounded-full font-medium">อาจารย์แพทย์เฉพาะทางนิติเวช</span>
+                        </div>
+                    </div>
+                    <!-- Faculty Item 4 -->
+                    <div class="flex items-start gap-3 p-4 bg-emerald-50/50 border border-emerald-100 rounded-xl">
+                        <div class="w-12 h-12 bg-emerald-200 text-emerald-800 rounded-full flex items-center justify-center font-bold text-scale-lg shrink-0">ส</div>
+                        <div>
+                            <h4 class="font-bold text-emerald-950 text-scale-body">นพ. สมพงษ์ ขวัญเปรม</h4>
+                            <p class="text-emerald-800 text-scale-sm">โรงพยาบาลแม่สอด จังหวัดตาก</p>
+                            <span class="inline-block mt-1 bg-emerald-700 text-white text-[10px] px-2 py-0.5 rounded-full font-medium">อาจารย์แพทย์ร่วมสอนภาคคลินิก</span>
+                        </div>
+                    </div>
+                    <!-- Faculty Item 5 -->
+                    <div class="flex items-start gap-3 p-4 bg-emerald-50/50 border border-emerald-100 rounded-xl">
+                        <div class="w-12 h-12 bg-emerald-200 text-emerald-800 rounded-full flex items-center justify-center font-bold text-scale-lg shrink-0">ร</div>
+                        <div>
+                            <h4 class="font-bold text-emerald-950 text-scale-body">นพ. รัฐกร เพิ่มสุวรรณ</h4>
+                            <p class="text-emerald-800 text-scale-sm">โรงพยาบาลเพชรบูรณ์</p>
+                            <span class="inline-block mt-1 bg-emerald-700 text-white text-[10px] px-2 py-0.5 rounded-full font-medium">อาจารย์แพทย์ร่วมสอนภาคคลินิก</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ======================= SECTION 2: Orientation Slide ======================= -->
+        <section id="sec-orientation" class="tab-content hidden space-y-6">
+            <div class="bg-white rounded-2xl p-6 border border-emerald-100 shadow-sm">
+                <h2 class="text-scale-h2 font-bold text-emerald-950 border-b pb-3 border-emerald-50 mb-4 flex items-center gap-2">
+                    <span class="p-1.5 bg-emerald-100 rounded-lg text-emerald-800">🖥️</span> สไลด์แนะแนวกระบวนวิชา (Orientation Slides)
+                </h2>
+                <p class="text-scale-body text-emerald-800 mb-4">
+                    นิสิตแพทย์สามารถศึกษาแผนการเรียน ข้อบังคับกฎหมาย การทำเคสคอนเฟอเรนซ์ และแนวทางปฏิบัติได้จากกรอบด้านล่างนี้:
+                </p>
+
+                <!-- Google Slides Iframe Embed -->
+                <div class="relative w-full aspect-video border-2 border-emerald-100 rounded-xl overflow-hidden bg-emerald-50">
+                    <iframe src="https://docs.google.com/presentation/d/13exUivKL7dbNkoLbUQSE364o7MvMKFYXmxC24yRKNRM/embed?start=false&loop=false&delayms=3000" 
+                            class="absolute top-0 left-0 w-full h-full" 
+                            frameborder="0" 
+                            allowfullscreen="true" 
+                            mozallowfullscreen="true" 
+                            webkitallowfullscreen="true">
+                    </iframe>
+                </div>
+
+                <div class="flex flex-col sm:flex-row gap-3 mt-4">
+                    <a href="https://docs.google.com/presentation/d/13exUivKL7dbNkoLbUQSE364o7MvMKFYXmxC24yRKNRM/edit?usp=sharing" target="_blank" 
+                       class="flex-1 text-center py-3 px-4 bg-emerald-800 text-white rounded-xl font-medium text-scale-body hover:bg-emerald-900 active:scale-[0.98] transition-all flex items-center justify-center gap-2 shadow-sm">
+                        <span>🔓 เปิดใน Google Slides โดยตรง ↗</span>
+                    </a>
+                </div>
+
+                <div class="mt-6 p-4 bg-emerald-50 rounded-xl border border-emerald-100 text-scale-body text-emerald-950">
+                    <h3 class="font-bold text-emerald-900 text-scale-lg flex items-center gap-2 mb-2">📌 โครงสร้าง Case Study Conference (นสพ. ทุกคนต้องนำเสนอ 1 ครั้ง)</h3>
+                    <ul class="list-decimal pl-5 space-y-1.5 text-scale-sm text-emerald-900">
+                        <li><strong>ประวัติและการตรวจร่างกาย:</strong> ต้องเขียนนำเสนอเป็นภาษาอังกฤษเท่านั้น</li>
+                        <li><strong>วิเคราะห์ตอบปมคำถามหลัก 5 ข้อ:</strong> ศพนี้คือใคร?, เสียชีวิตที่ไหน?, เสียชีวิตเมื่อใด?, เหตุและสาเหตุการตายคืออะไร?, และพฤติการณ์ที่นำไปสู่การเสียชีวิตคืออะไร?</li>
+                        <li><strong>Differential Diagnosis:</strong> แสดงสาเหตุหลักและการวินิจฉัยแยกโรค</li>
+                        <li><strong>สืบสวนเพิ่มเติม (Investigation):</strong> แสดงการเก็บสิ่งตรวจสารพิษ/วัตถุพยาน พร้อมขอบเขตการผ่าชันสูตร</li>
+                        <li><strong>Journal Review:</strong> บูรณาการรีวิวบทความวิชาการที่เกี่ยวข้อง (1 ชิ้น)</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- ======================= SECTION 3: เอกสารดาวน์โหลด & ตำรา ======================= -->
+        <section id="sec-forms" class="tab-content hidden space-y-6">
+            <div class="bg-white rounded-2xl p-6 border border-emerald-100 shadow-sm">
+                <h2 class="text-scale-h2 font-bold text-emerald-950 border-b pb-3 border-emerald-50 mb-4 flex items-center gap-2">
+                    <span class="p-1.5 bg-emerald-100 rounded-lg text-emerald-800">📥</span> ดาวน์โหลดเอกสารประกอบ & แบบฟอร์ม
+                </h2>
+                <p class="text-scale-body text-emerald-800 mb-6">คลิกปุ่มดาวน์โหลดเพื่อเข้าสู่ Google Drive โฟลเดอร์ดาวน์โหลดแบบฟอร์มหลักและแม่แบบการจัดทำรายงานได้โดยตรง:</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Form Download Item 1 -->
+                    <div class="border border-emerald-100 rounded-xl p-4 bg-emerald-50/30 flex flex-col justify-between">
+                        <div>
+                            <h3 class="font-bold text-emerald-950 text-scale-body">📝 หนังสือรับรองการตาย (ทร.4/1)</h3>
+                            <p class="text-emerald-800 text-scale-sm mt-1">แบบฟอร์มใช้เขียนรับรองเมื่อตรวจพบสาเหตุและพฤติการณ์การตายนอกโรงพยาบาล</p>
+                        </div>
+                        <a href="https://drive.google.com/drive/folders/1KZrbqIqut9DwJBWGdys6y4U6rE4ceKLR?usp=sharing" target="_blank" 
+                           class="mt-4 py-2.5 px-4 bg-emerald-850 bg-emerald-800 text-white rounded-xl text-scale-sm font-semibold hover:bg-emerald-900 flex items-center justify-center gap-1.5 text-center">
+                            💾 เปิดโฟลเดอร์ดาวน์โหลด ทร.4/1 ↗
+                        </a>
+                    </div>
+
+                    <!-- Form Download Item 2 -->
+                    <div class="border border-emerald-100 rounded-xl p-4 bg-emerald-50/30 flex flex-col justify-between">
+                        <div>
+                            <h3 class="font-bold text-emerald-950 text-scale-body">🗒️ รายงานชันสูตรบาดแผลคดี (OPD)</h3>
+                            <p class="text-emerald-800 text-scale-sm mt-1">แบบรายงานทางวิชาชีพสำหรับตรวจผู้ป่วยคดีที่ยังมีชีวิตอยู่ ส่งงานจำนวน 1 ราย</p>
+                        </div>
+                        <a href="https://drive.google.com/drive/folders/1KZrbqIqut9DwJBWGdys6y4U6rE4ceKLR?usp=sharing" target="_blank"
+                           class="mt-4 py-2.5 px-4 bg-emerald-800 text-white rounded-xl text-scale-sm font-semibold hover:bg-emerald-900 flex items-center justify-center gap-1.5 text-center">
+                            💾 เปิดโฟลเดอร์ดาวน์โหลดใบ OPD ↗
+                        </a>
+                    </div>
+
+                    <!-- Form Download Item 3 -->
+                    <div class="border border-emerald-100 rounded-xl p-4 bg-emerald-50/30 flex flex-col justify-between">
+                        <div>
+                            <h3 class="font-bold text-emerald-950 text-scale-body">💀 รายงานการชันสูตรพลิกศพ (1 ศพ)</h3>
+                            <p class="text-emerald-800 text-scale-sm mt-1">แบบฟอร์มเขียนอธิบายข้อมูลการผ่าชันสูตรและสภาพศพภายนอก ส่งงานจำนวน 1 ศพ</p>
+                        </div>
+                        <a href="https://drive.google.com/drive/folders/1KZrbqIqut9DwJBWGdys6y4U6rE4ceKLR?usp=sharing" target="_blank"
+                           class="mt-4 py-2.5 px-4 bg-emerald-800 text-white rounded-xl text-scale-sm font-semibold hover:bg-emerald-900 flex items-center justify-center gap-1.5 text-center">
+                            💾 เปิดโฟลเดอร์ดาวน์โหลดรายงานศพ ↗
+                        </a>
+                    </div>
+
+                    <!-- Form Download Item 4 -->
+                    <div class="border border-emerald-100 rounded-xl p-4 bg-emerald-50/30 flex flex-col justify-between">
+                        <div>
+                            <h3 class="font-bold text-emerald-950 text-scale-body">📋 คู่มือประมวลรายวิชา (Syllabus)</h3>
+                            <p class="text-emerald-800 text-scale-sm mt-1">คู่มือชี้แจงกฎกติกาทั้งหมดในการเข้าศึกษาเวชนิติศาสตร์ ประจำปีการศึกษา 2566</p>
+                        </div>
+                        <a href="https://drive.google.com/drive/folders/1KZrbqIqut9DwJBWGdys6y4U6rE4ceKLR?usp=sharing" target="_blank"
+                           class="mt-4 py-2.5 px-4 bg-emerald-800 text-white rounded-xl text-scale-sm font-semibold hover:bg-emerald-900 flex items-center justify-center gap-1.5 text-center">
+                            💾 เปิดโฟลเดอร์ดาวน์โหลด Syllabus ↗
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- STANDARD TEXTBOOK SECTION -->
+            <div class="bg-white rounded-2xl p-6 border border-emerald-100 shadow-sm relative overflow-hidden">
+                <div class="absolute right-0 bottom-0 w-24 h-24 bg-emerald-50 rounded-full translate-x-5 translate-y-5 -z-10 opacity-60"></div>
+                <h2 class="text-scale-h2 font-bold text-emerald-950 border-b pb-3 border-emerald-50 mb-4 flex items-center gap-2">
+                    <span class="p-1.5 bg-emerald-100 rounded-lg text-emerald-800">📚</span> คลังตำรามาตรฐานนิติเวชศาสตร์ (Standard Textbooks)
+                </h2>
+                <p class="text-scale-body text-emerald-800 mb-4">
+                    เพื่อสนับสนุนการเรียนรู้ด้วยตนเอง (SDL) และการสืบค้นอ้างอิงข้อมูลทางนิติเวชศาสตร์ที่ได้มาตรฐานสากล นิสิตสามารถเข้าถึงคลังตำราอิเล็กทรอนิกส์ได้ตามลิงก์ด้านล่างนี้:
+                </p>
+
+                <div class="p-5 bg-emerald-50/70 border border-emerald-200 rounded-xl">
+                    <h3 class="font-bold text-emerald-950 text-scale-lg flex items-center gap-2 mb-2">📖 รายชื่อตำราและแหล่งข้อมูลแนะนำ:</h3>
+                    <ul class="list-disc pl-5 text-scale-sm text-emerald-900 space-y-1 mb-5">
+                        <li><strong>Forensic Pathology (Principles and Practice)</strong> - ตำรานิติพยาธิวิทยาเชิงลึก</li>
+                        <li><strong>Knight's Forensic Pathology</strong> - คู่มือมาตรฐานการตรวจและวินิจฉัยสภาพศพ</li>
+                        <li><strong>Clinical Forensic Medicine</strong> - นิติเวชคลินิก การตรวจร่างกายคดีทางเพศและการทำร้ายร่างกาย</li>
+                        <li>กฎหมายนิติเวชที่เกี่ยวข้องกับการชันสูตรพลิกศพของไทย</li>
+                    </ul>
+
+                    <a href="https://drive.google.com/drive/folders/1CanotLecx1QSfOsmUFn6Ugy_u6A6kB1A?usp=sharing" target="_blank"
+                       class="w-full inline-flex items-center justify-center gap-2 py-3 px-4 bg-emerald-800 text-white font-semibold text-scale-body rounded-xl hover:bg-emerald-900 transition-colors shadow-sm text-center">
+                        📚 เข้าสู่คลังตำราเรียนนิติเวช (Google Drive) ↗
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- ======================= SECTION 4: ตรวจสอบรายงาน & ฝึกกรอกฟอร์ม ======================= -->
+        <section id="sec-reports" class="tab-content hidden space-y-6">
+            
+            <!-- INTERACTIVE FORM FILLER (Moved from Section 3) -->
+            <div class="bg-white rounded-2xl p-6 border border-emerald-100 shadow-sm">
+                <h2 class="text-scale-h2 font-bold text-emerald-950 border-b pb-3 border-emerald-50 mb-4 flex items-center gap-2">
+                    <span class="p-1.5 bg-emerald-100 rounded-lg text-emerald-800">✏️</span> เครื่องมือจำลองฝึกฝนกรอกเอกสาร ทร.4/1 ออนไลน์
+                </h2>
+                <p class="text-scale-body text-emerald-800 mb-4">ลองป้อนข้อมูลลงในช่องด้านล่างเพื่อประเมินความสอดคล้องตามหลักลำดับสาเหตุการตายทางนิติเวช (ICD-10):</p>
+                
+                <div class="space-y-4 p-4 bg-emerald-50/50 rounded-xl border border-emerald-100">
+                    <div>
+                        <label class="block text-scale-sm font-bold text-emerald-950 mb-1">เหตุการตายขั้นต้น (Direct Cause) - โรคหรือบาดแผลที่เป็นสาเหตุหลักโดยตรง (ช่อง a)</label>
+                        <input type="text" id="form-cause-a" placeholder="เช่น เลือดออกใต้เยื่อหุ้มสมองชั้นหนา (Subdural hemorrhage)" class="w-full p-2.5 border border-emerald-200 rounded-lg focus:ring-2 focus:ring-emerald-800 focus:outline-none text-scale-sm">
+                    </div>
+                    <div>
+                        <label class="block text-scale-sm font-bold text-emerald-950 mb-1">สืบเนื่องมาจาก (Antecedent Cause) - สาเหตุรองหรือโรคเดิมที่เป็นต้นกำเนิด (ช่อง b)</label>
+                        <input type="text" id="form-cause-b" placeholder="เช่น กะโหลกศีรษะแตกและสมองช้ำ" class="w-full p-2.5 border border-emerald-200 rounded-lg focus:ring-2 focus:ring-emerald-800 focus:outline-none text-scale-sm">
+                    </div>
+                    <div>
+                        <label class="block text-scale-sm font-bold text-emerald-950 mb-1">ปัจจัยเกื้อหนุนภายนอก (External Cause of Injury) - พฤติการณ์การบาดเจ็บรุนแรง (ช่อง c)</label>
+                        <input type="text" id="form-cause-c" placeholder="เช่น ถูกทำร้ายร่างกายโดยใช้ไม้ตีที่ศีรษะ" class="w-full p-2.5 border border-emerald-200 rounded-lg focus:ring-2 focus:ring-emerald-800 focus:outline-none text-scale-sm">
+                    </div>
+                    
+                    <button onclick="checkFormLogic()" class="w-full py-2.5 px-4 bg-emerald-800 text-white rounded-xl text-scale-sm font-bold hover:bg-emerald-900 transition-colors">
+                        🩺 ตรวจสอบตรรกะความสอดคล้องสาเหตุการตาย
+                    </button>
+
+                    <div id="form-logic-feedback" class="hidden p-4 rounded-lg text-scale-sm font-medium"></div>
+                </div>
+            </div>
+
+            <!-- Syllabus Validator Scanner -->
+            <div class="bg-white rounded-2xl p-6 border border-emerald-100 shadow-sm">
+                <h2 class="text-scale-h2 font-bold text-emerald-950 border-b pb-3 border-emerald-50 mb-4 flex items-center gap-2">
+                    <span class="p-1.5 bg-emerald-100 rounded-lg text-emerald-800">🔍</span> โปรแกรมช่วยตรวจรายงานผิดเกณฑ์ Rubric
+                </h2>
+                
+                <div class="bg-emerald-50 border border-emerald-100 rounded-xl p-4 text-scale-body mb-4">
+                    <h3 class="font-bold text-emerald-900 text-scale-lg">⚠️ คำเตือนสำคัญตามข้อกำหนดกองนิติเวช:</h3>
+                    <ul class="list-disc pl-5 text-scale-sm text-emerald-950 mt-1.5 space-y-1">
+                        <li><strong>รายงานการชันสูตรพลิกศพ:</strong> ส่งจำนวน 1 ศพ และมีหนังสือรับรองการตายประกอบ</li>
+                        <li><strong>รายงานชันสูตรบาดแผลคนไข้คดี OPD:</strong> ส่งจำนวน 1 ราย</li>
+                        <li><strong>ห้ามใช้คำย่อทางการแพทย์</strong> ในใบชันสูตรบาดแผลและรายงานศพ เช่น <span class="bg-emerald-100 px-1 rounded font-bold text-emerald-800">Fx, SDH, EDH, GCS</span> เด็ดขาด</li>
+                        <li><strong>ห้ามมีภาษาอังกฤษเขียนปนสอดแทรก</strong> ในส่วนอธิบายหลักที่ต้องใช้ประกอบคดี</li>
+                        <li><strong>ห้ามใช้สัญลักษณ์ทางคณิตศาสตร์ย่อ</strong> เช่น การเขียนขนาดบาดแผล <span class="text-red-700 font-bold">2 x 3 x 4 ซม.</span> (ที่ถูกต้องสะกด: ขนาดกว้าง 2 เซนติเมตร ยาว 3 เซนติเมตร ลึก 4 เซนติเมตร)</li>
+                    </ul>
+                </div>
+
+                <p class="text-scale-body text-emerald-950 mb-2">ให้นิสิตคัดลอกร่างเนื้อหารายงานส่งครูฝึกวางลงในกรอบเพื่อสแกนหาข้อผิดพลาดและตรวจเกณฑ์โดยอัตโนมัติก่อนส่งจริง:</p>
+                <textarea id="report-input" rows="6" class="w-full p-4 border border-emerald-200 rounded-xl focus:ring-2 focus:ring-emerald-800 focus:outline-none text-scale-sm" placeholder="ลองวางตัวอย่างข้อความรายงานเพื่อจำลองสแกน เช่น: 'ผู้ป่วยมีบาดแผลฉีกขาด GCS 15 พบ Fx. ของกระดูกหน้าแข้งขวา ขนาด 2x3 ซม. ในศพมีอาการ Livor fixed...'"></textarea>
+                
+                <button onclick="validateStudentReport()" class="mt-3 w-full py-3 px-4 bg-emerald-800 text-white rounded-xl text-scale-sm font-bold hover:bg-emerald-900 active:scale-[0.99] transition-all">
+                    🚀 กดตรวจสอบคำผิดกฎนิติเวชทันที
+                </button>
+
+                <div id="validation-result" class="hidden mt-4 p-4 rounded-xl border"></div>
+            </div>
+        </section>
+
+        <!-- ======================= SECTION 5: เนื้อหาบรรยาย (TOS) ======================= -->
+        <section id="sec-tos" class="tab-content hidden space-y-6">
+            <div class="bg-white rounded-2xl p-6 border border-emerald-100 shadow-sm">
+                <h2 class="text-scale-h2 font-bold text-emerald-950 border-b pb-3 border-emerald-50 mb-4 flex items-center gap-2">
+                    <span class="p-1.5 bg-emerald-100 rounded-lg text-emerald-800">📖</span> หัวข้อบทเรียนตาม Table of Specification (TOS)
+                </h2>
+                <p class="text-scale-body text-emerald-800 mb-4">คลิกที่แต่ละบทเรียนเพื่อขยายอ่าน **สรุปข้อควรจำ (High-yield Highlights)** และสัดส่วนจำนวนข้อสอบ MCQ ของแต่ละหัวข้อหลัก:</p>
+
+                <!-- 13 Accordions for TOS -->
+                <div class="space-y-3" id="tos-accordion-group">
+                    
+                    <!-- Item 1 -->
+                    <div class="border border-emerald-100 rounded-xl overflow-hidden bg-emerald-50/20">
+                        <button onclick="toggleAccordion('tos-1')" class="w-full px-4 py-3 flex items-center justify-between text-left text-emerald-950 hover:bg-emerald-100/40">
+                            <span class="font-semibold text-scale-body">1. Introduction to Forensic Pathology and Law</span>
+                            <span class="bg-emerald-100 text-emerald-800 text-xs px-2 py-0.5 rounded-full font-bold">4 ข้อ</span>
+                        </button>
+                        <div id="tos-1" class="hidden p-4 border-t border-emerald-50 bg-white text-scale-sm text-emerald-900 leading-relaxed">
+                            <strong>ประเด็นสำคัญที่ออกข้อสอบบ่อย:</strong>
+                            <p>ความหมายขอบเขตของสาขาวิชานิติเวชศาสตร์ แพทย์ในที่เกิดเหตุ อำนาจหน้าที่ตามประมวลกฎหมายวิธีพิจารณาความอาญา มาตรา 148-156 รวมถึงความแตกต่างระหว่างนิติพยาธิวิทยาและนิติเวชคลินิกทั่วไป</p>
+                        </div>
+                    </div>
+
+                    <!-- Item 2 -->
+                    <div class="border border-emerald-100 rounded-xl overflow-hidden bg-emerald-50/20">
+                        <button onclick="toggleAccordion('tos-2')" class="w-full px-4 py-3 flex items-center justify-between text-left text-emerald-950 hover:bg-emerald-100/40">
+                            <span class="font-semibold text-scale-body">2. Documentation in Forensic (การบันทึกรายงาน)</span>
+                            <span class="bg-emerald-100 text-emerald-800 text-xs px-2 py-0.5 rounded-full font-bold">8 ข้อ</span>
+                        </button>
+                        <div id="tos-2" class="hidden p-4 border-t border-emerald-50 bg-white text-scale-sm text-emerald-900 leading-relaxed">
+                            <strong>ประเด็นสำคัญที่ออกข้อสอบบ่อย:</strong>
+                            <p>การบันทึกรายละเอียดใบชันสูตรบาดแผล บาดแผลชนิดใดนับเป็นสาหัสตาม ป.อ. มาตรา 297 ทร. 4/1 และประมวลความตายนอกรพ. หลักเกณฑ์ทางกฎหมายความสำคัญของรายงานต่อหน้าศาล</p>
+                        </div>
+                    </div>
+
+                    <!-- Item 3 -->
+                    <div class="border border-emerald-100 rounded-xl overflow-hidden bg-emerald-50/20">
+                        <button onclick="toggleAccordion('tos-3')" class="w-full px-4 py-3 flex items-center justify-between text-left text-emerald-950 hover:bg-emerald-100/40">
+                            <span class="font-semibold text-scale-body">3. Body Identification and Postmortem Change</span>
+                            <span class="bg-emerald-100 text-emerald-800 text-xs px-2 py-0.5 rounded-full font-bold">6 ข้อ</span>
+                        </button>
+                        <div id="tos-3" class="hidden p-4 border-t border-emerald-50 bg-white text-scale-sm text-emerald-900 leading-relaxed">
+                            <strong>ประเด็นสำคัญที่ออกข้อสอบบ่อย:</strong>
+                            <p>การประเมิน Rigor mortis, Livor mortis (การแยกแยะ Livor ออกจากรอยช้ำจ้ำเลือด), การลดต่ำของอุณหภูมิแกนกลาง (Algor mortis), การประเมินระยะเวลาเสียชีวิต (PMI) และกระบวนการตรวจดีเอ็นเอ/ทันตกรรมนิติเวชเพื่อพิสูจน์เอกลักษณ์บุคคล</p>
+                        </div>
+                    </div>
+
+                    <!-- Item 4 -->
+                    <div class="border border-emerald-100 rounded-xl overflow-hidden bg-emerald-50/20">
+                        <button onclick="toggleAccordion('tos-4')" class="w-full px-4 py-3 flex items-center justify-between text-left text-emerald-950 hover:bg-emerald-100/40">
+                            <span class="font-semibold text-scale-body">4. Wound and Law (ประเภทบาดแผลและกฎหมายที่เกี่ยวข้อง)</span>
+                            <span class="bg-emerald-100 text-emerald-800 text-xs px-2 py-0.5 rounded-full font-bold">4 ข้อ</span>
+                        </button>
+                        <div id="tos-4" class="hidden p-4 border-t border-emerald-50 bg-white text-scale-sm text-emerald-900 leading-relaxed">
+                            <strong>ประเด็นสำคัญที่ออกข้อสอบบ่อย:</strong>
+                            <p>จำแนกชนิดบาดแผล: บาดแผลฉีกขอบไม่เรียบ (Laceration), แผลตัดขอบเรียบ (Incised wound), แผลถูกแทง (Stab wound) การแยกแยะแผลที่ถูกทำร้ายกับแผลทำร้ายตัวเอง (Hesitation marks)</p>
+                        </div>
+                    </div>
+
+                    <!-- Item 5 -->
+                    <div class="border border-emerald-100 rounded-xl overflow-hidden bg-emerald-50/20">
+                        <button onclick="toggleAccordion('tos-5')" class="w-full px-4 py-3 flex items-center justify-between text-left text-emerald-950 hover:bg-emerald-100/40">
+                            <span class="font-semibold text-scale-body">5. Gun fire and Blast Injury</span>
+                            <span class="bg-emerald-100 text-emerald-800 text-xs px-2 py-0.5 rounded-full font-bold">4 ข้อ</span>
+                        </button>
+                        <div id="tos-5" class="hidden p-4 border-t border-emerald-50 bg-white text-scale-sm text-emerald-900 leading-relaxed">
+                            <strong>ประเด็นสำคัญที่ออกข้อสอบบ่อย:</strong>
+                            <p>ลักษณะรูเข้า-รูออกของบาดแผลกระสุนปืน, ควันดินปืน (Sooting), รอยเขม่าระเบิด (Tattooing), บาดแผลในระยะเผาขน (Contact wound) และการบาดเจ็บแรงอัดระเบิด (Blast injuries)</p>
+                        </div>
+                    </div>
+
+                    <!-- Item 6 -->
+                    <div class="border border-emerald-100 rounded-xl overflow-hidden bg-emerald-50/20">
+                        <button onclick="toggleAccordion('tos-6')" class="w-full px-4 py-3 flex items-center justify-between text-left text-emerald-950 hover:bg-emerald-100/40">
+                            <span class="font-semibold text-scale-body">6. Sex Crime and Child Abuse (คดีทางเพศและการละเมิดเด็ก)</span>
+                            <span class="bg-emerald-100 text-emerald-800 text-xs px-2 py-0.5 rounded-full font-bold">6 ข้อ</span>
+                        </button>
+                        <div id="tos-6" class="hidden p-4 border-t border-emerald-50 bg-white text-scale-sm text-emerald-900 leading-relaxed">
+                            <strong>ประเด็นสำคัญที่ออกข้อสอบบ่อย:</strong>
+                            <p>การเก็บอสุจิและร่องรอยการฉีกขาดของเยื่อพรหมจารีย์ การชันสูตรผู้เสียหายจากความรุนแรงในครอบครัว สัญญาณทางคลินิกของการทำร้ายทารก (Shaken baby syndrome, รอยช้ำสีกระจายตัว)</p>
+                        </div>
+                    </div>
+
+                    <!-- Item 7 -->
+                    <div class="border border-emerald-100 rounded-xl overflow-hidden bg-emerald-50/20">
+                        <button onclick="toggleAccordion('tos-7')" class="w-full px-4 py-3 flex items-center justify-between text-left text-emerald-950 hover:bg-emerald-100/40">
+                            <span class="font-semibold text-scale-body">7. Body Found in Road Traffic Scene (คดีอุบัติเหตุจราจร)</span>
+                            <span class="bg-emerald-100 text-emerald-800 text-xs px-2 py-0.5 rounded-full font-bold">4 ข้อ</span>
+                        </button>
+                        <div id="tos-7" class="hidden p-4 border-t border-emerald-50 bg-white text-scale-sm text-emerald-900 leading-relaxed">
+                            <strong>ประเด็นสำคัญที่ออกข้อสอบบ่อย:</strong>
+                            <p>การวิเคราะห์กลไกการปะทะและการบาดเจ็บจากเข็มขัดนิรภัย-พวงมาลัย, บาดแผลแตกจากการถูกรถทับกระแทกข้าม (Runover injury) และการตรวจหาแอลกอฮอล์ในน้ำตาหล่อแก้วตา</p>
+                        </div>
+                    </div>
+
+                    <!-- Item 8 -->
+                    <div class="border border-emerald-100 rounded-xl overflow-hidden bg-emerald-50/20">
+                        <button onclick="toggleAccordion('tos-8')" class="w-full px-4 py-3 flex items-center justify-between text-left text-emerald-950 hover:bg-emerald-100/40">
+                            <span class="font-semibold text-scale-body">8. Body in Fire and Electrical Death (ไฟไหม้และไฟฟ้าช็อต)</span>
+                            <span class="bg-emerald-100 text-emerald-800 text-xs px-2 py-0.5 rounded-full font-bold">4 ข้อ</span>
+                        </button>
+                        <div id="tos-8" class="hidden p-4 border-t border-emerald-50 bg-white text-scale-sm text-emerald-900 leading-relaxed">
+                            <strong>ประเด็นสำคัญที่ออกข้อสอบบ่อย:</strong>
+                            <p>การตรวจร่องรอยการสำลักเขม่าพบลักษณะ Pugilistic attitude (ท่าชกมวย), สัญญาณการยังมีชีวิตขณะเกิดไฟไหม้ (Soot in airway และ Carboxyhemoglobin ในเลือดสูง), รอยไหม้ทางไฟฟ้าทางผ่านกระแส (Current mark)</p>
+                        </div>
+                    </div>
+
+                    <!-- Item 9 -->
+                    <div class="border border-emerald-100 rounded-xl overflow-hidden bg-emerald-50/20">
+                        <button onclick="toggleAccordion('tos-9')" class="w-full px-4 py-3 flex items-center justify-between text-left text-emerald-950 hover:bg-emerald-100/40">
+                            <span class="font-semibold text-scale-body">9. Asphyxia and Drowning (การขาดอากาศและการจมน้ำ)</span>
+                            <span class="bg-emerald-100 text-emerald-800 text-xs px-2 py-0.5 rounded-full font-bold">4 ข้อ</span>
+                        </button>
+                        <div id="tos-9" class="hidden p-4 border-t border-emerald-50 bg-white text-scale-sm text-emerald-900 leading-relaxed">
+                            <strong>ประเด็นสำคัญที่ออกข้อสอบบ่อย:</strong>
+                            <p>การแยกความต่างระหว่าง Hanging (แขวนคอตายเอง) และ Strangulation (รัดคอฆาตกรรม), รอยช้ำใต้ตาขาว (Tardieu spots), ของเหลวเป็นฟองละเอียดในทางเดินหายใจจากการจมน้ำ (Froth foam cone) และการตรวจหาไดอะตอม (Diatoms)</p>
+                        </div>
+                    </div>
+
+                    <!-- Item 10 -->
+                    <div class="border border-emerald-100 rounded-xl overflow-hidden bg-emerald-50/20">
+                        <button onclick="toggleAccordion('tos-10')" class="w-full px-4 py-3 flex items-center justify-between text-left text-emerald-950 hover:bg-emerald-100/40">
+                            <span class="font-semibold text-scale-body">10. SUNDs (ภาวะใหลตายเฉียบพลัน)</span>
+                            <span class="bg-emerald-100 text-emerald-800 text-xs px-2 py-0.5 rounded-full font-bold">2 ข้อ</span>
+                        </button>
+                        <div id="tos-10" class="hidden p-4 border-t border-emerald-50 bg-white text-scale-sm text-emerald-900 leading-relaxed">
+                            <strong>ประเด็นสำคัญที่ออกข้อสอบบ่อย:</strong>
+                            <p>สาเหตุและพันธุกรรมเกี่ยวข้อง Brugada syndrome ทางพยาธิสรีรวิทยา การแยกแยะพยาธิสภาพหัวใจตายอย่างเฉียบพลันออกจากโรคกล้ามเนื้อหัวใจขาดเลือดอื่น</p>
+                        </div>
+                    </div>
+
+                    <!-- Item 11 -->
+                    <div class="border border-emerald-100 rounded-xl overflow-hidden bg-emerald-50/20">
+                        <button onclick="toggleAccordion('tos-11')" class="w-full px-4 py-3 flex items-center justify-between text-left text-emerald-950 hover:bg-emerald-100/40">
+                            <span class="font-semibold text-scale-body">11. กฎหมายทางการแพทย์ กฎหมายวิชาชีพ</span>
+                            <span class="bg-emerald-100 text-emerald-800 text-xs px-2 py-0.5 rounded-full font-bold">4 ข้อ</span>
+                        </button>
+                        <div id="tos-11" class="hidden p-4 border-t border-emerald-50 bg-white text-scale-sm text-emerald-900 leading-relaxed">
+                            <strong>ประเด็นสำคัญที่ออกข้อสอบบ่อย:</strong>
+                            <p>สิทธิผู้ป่วย จริยธรรมทางการแพทย์ พระราชบัญญัติวิชาชีพเวชกรรม คดีแพ่งที่เกิดจากการรักษาผิดพลาด และขั้นตอนรับมือหากแพทย์ถูกฟ้องร้อง</p>
+                        </div>
+                    </div>
+
+                    <!-- Item 12 -->
+                    <div class="border border-emerald-100 rounded-xl overflow-hidden bg-emerald-50/20">
+                        <button onclick="toggleAccordion('tos-12')" class="w-full px-4 py-3 flex items-center justify-between text-left text-emerald-950 hover:bg-emerald-100/40">
+                            <span class="font-semibold text-scale-body">12. Crime Scene Investigation (ที่เกิดเหตุ)</span>
+                            <span class="bg-emerald-100 text-emerald-800 text-xs px-2 py-0.5 rounded-full font-bold">4 ข้อ</span>
+                        </button>
+                        <div id="tos-12" class="hidden p-4 border-t border-emerald-50 bg-white text-scale-sm text-emerald-900 leading-relaxed">
+                            <strong>ประเด็นสำคัญที่ออกข้อสอบบ่อย:</strong>
+                            <p>บทบาทแพทย์ชันสูตรร่วมกับพนักงานสอบสวน ตำรวจพิสูจน์หลักฐาน (พฐ.) การกั้นขอบเขตที่เกิดเหตุและการเก็บรักษาลูกปืนและสารตรวจพยานนิติวิทยาศาสตร์</p>
+                        </div>
+                    </div>
+
+                    <!-- Item 13 -->
+                    <div class="border border-emerald-100 rounded-xl overflow-hidden bg-emerald-50/20">
+                        <button onclick="toggleAccordion('tos-13')" class="w-full px-4 py-3 flex items-center justify-between text-left text-emerald-950 hover:bg-emerald-100/40">
+                            <span class="font-semibold text-scale-body">13. Forensic Toxicology (สารเคมีพิษนิติเวช)</span>
+                            <span class="bg-emerald-100 text-emerald-800 text-xs px-2 py-0.5 rounded-full font-bold">4 ข้อ</span>
+                        </button>
+                        <div id="tos-13" class="hidden p-4 border-t border-emerald-50 bg-white text-scale-sm text-emerald-900 leading-relaxed">
+                            <strong>ประเด็นสำคัญที่ออกข้อสอบบ่อย:</strong>
+                            <p>สารพิษที่พบบ่อย (ไซยาไนด์, สารพาราควอต, คาร์บอนมอนอกไซด์), การจัดส่งตัวอย่างเลือดและน้ำในตา รวมไปถึงการเก็บปัสสาวะเพื่อวิเคราะห์นิติวิทยาศาสตร์ทางสารเสพติด</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- ======================= SECTION 6: ข้อสอบจำลอง ======================= -->
+        <section id="sec-quiz" class="tab-content hidden space-y-6">
+            
+            <!-- MULTIPLE CHOICE QUESTIONS CENTER -->
+            <div class="bg-white rounded-2xl p-6 border border-emerald-100 shadow-sm">
+                <div class="flex justify-between items-center border-b pb-3 border-emerald-50 mb-4">
+                    <h2 class="text-scale-h2 font-bold text-emerald-950 flex items-center gap-2">
+                        <span class="p-1.5 bg-emerald-100 rounded-lg text-emerald-800">✍️</span> คลังข้อสอบจำลอง MCQ บอร์ดนิติเวช
+                    </h2>
+                    <!-- Score Badge -->
+                    <div class="bg-emerald-800 text-white font-bold px-3 py-1 rounded-full text-scale-sm">
+                        คะแนนสด: <span id="quiz-score">0</span> / 5
+                    </div>
+                </div>
+                <p class="text-scale-body text-emerald-800 mb-6">ทบทวนความรู้ก่อนสอบจริงด้วยโจทย์แบบฝึกหัดนิติเวชศาสตร์พร้อมระบบตอบปุ๊บรู้ผลเฉลยอธิบายเหตุผลทันที:</p>
+
+                <!-- Questions List -->
+                <div class="space-y-6">
+
+                    <!-- Question 1 -->
+                    <div class="quiz-card p-4 border border-emerald-100 rounded-xl bg-emerald-50/10">
+                        <span class="bg-emerald-200 text-emerald-800 font-bold text-xs px-2.5 py-1 rounded-md">ข้อที่ 1 - Postmortem Change</span>
+                        <p class="text-scale-body font-bold text-emerald-950 mt-2">เมื่อตรวจศพ ณ ที่เกิดเหตุ พบ Rigor mortis ทั่วตัวแบบตึงเต็มที่และ Livor mortis มีลักษณะสะสมแน่นอยู่บริเวณด้านหลังของศพที่นอนหงาย เมื่อนิสิตใช้มือกดแรงๆ แล้วสีแดงคล้ำไม่จางลง (Fixation) บ่งบอกว่าเสียชีวิตมาแล้วประมาณกี่ชั่วโมง?</p>
+                        
+                        <div class="mt-3 space-y-2">
+                            <button onclick="answerQuestion(1, 'a', false, this)" class="w-full text-left p-3 border border-emerald-100 rounded-lg bg-white text-scale-sm hover:bg-emerald-50">ก. เสียชีวิต 1 - 2 ชั่วโมง</button>
+                            <button onclick="answerQuestion(1, 'b', false, this)" class="w-full text-left p-3 border border-emerald-100 rounded-lg bg-white text-scale-sm hover:bg-emerald-50">ข. เสียชีวิต 3 - 4 ชั่วโมง</button>
+                            <button onclick="answerQuestion(1, 'c', true, this)" class="w-full text-left p-3 border border-emerald-100 rounded-lg bg-white text-scale-sm hover:bg-emerald-50">ค. เสียชีวิต 12 - 24 ชั่วโมง</button>
+                            <button onclick="answerQuestion(1, 'd', false, this)" class="w-full text-left p-3 border border-emerald-100 rounded-lg bg-white text-scale-sm hover:bg-emerald-50">ง. เสียชีวิตมากกว่า 48 ชั่วโมง</button>
+                        </div>
+                        <div id="q1-explanation" class="hidden mt-3 p-3 bg-emerald-50 border border-emerald-200 rounded-lg text-emerald-950 text-scale-sm">
+                            <strong>เฉลยถูกต้องคือ: ค</strong><br>
+                            <em>เหตุผลประกอบ:</em> Rigor mortis หรือการแข็งตัวของกล้ามเนื้อจะเกิดสูงสุดและสมบูรณ์ตั้งแต่ 6-12 ชม. ขณะที่ Livor mortis (รอยตกสะสมโลหิต) จะ Fix แน่นกดไม่จางลงที่ 8-12 ชม. การพบทั้งสองปรากฏการณ์คู่กันจึงชี้ว่าเสียชีวิตอย่างน้อย 12-24 ชม.
+                        </div>
+                    </div>
+
+                    <!-- Question 2 -->
+                    <div class="quiz-card p-4 border border-emerald-100 rounded-xl bg-emerald-50/10">
+                        <span class="bg-emerald-200 text-emerald-800 font-bold text-xs px-2.5 py-1 rounded-md">ข้อที่ 2 - Forensic Documentation</span>
+                        <p class="text-scale-body font-bold text-emerald-950 mt-2">ข้อใดปฏิบัติตามกฎเกณฑ์การเขียน "ใบชันสูตรบาดแผลทางกฎหมาย" เพื่อให้พนักงานสอบสวนใช้เป็นหลักฐานประกอบส่งฟ้องศาลได้ถูกต้องที่สุด?</p>
+                        
+                        <div class="mt-3 space-y-2">
+                            <button onclick="answerQuestion(2, 'a', false, this)" class="w-full text-left p-3 border border-emerald-100 rounded-lg bg-white text-scale-sm hover:bg-emerald-50">ก. ใช้ภาษาอังกฤษเชิงแพทย์ทั้งหมดเพื่อความก้าวหน้าทางวิชาการ</button>
+                            <button onclick="answerQuestion(2, 'b', true, this)" class="w-full text-left p-3 border border-emerald-100 rounded-lg bg-white text-scale-sm hover:bg-emerald-50">ข. เขียนรายละเอียดอธิบายเป็นภาษาไทยที่เข้าใจง่าย และเขียนขนาดหน่วยเต็ม เช่น เซนติเมตร</button>
+                            <button onclick="answerQuestion(2, 'c', false, this)" class="w-full text-left p-3 border border-emerald-100 rounded-lg bg-white text-scale-sm hover:bg-emerald-50">ค. ใช้น้ำยาลบคำผิดแบบใสพิเศษเมื่อตรวจพบจุดสะกดคลาดเคลื่อน</button>
+                            <button onclick="answerQuestion(2, 'd', false, this)" class="w-full text-left p-3 border border-emerald-100 rounded-lg bg-white text-scale-sm hover:bg-emerald-50">ง. ใช้สัญลักษณ์ทางคณิตศาสตร์สั้นๆ เช่น เครื่องหมาย "x" ในการระบุมิติมุมกว้างยาวลึก</button>
+                        </div>
+                        <div id="q2-explanation" class="hidden mt-3 p-3 bg-emerald-50 border border-emerald-200 rounded-lg text-emerald-950 text-scale-sm">
+                            <strong>เฉลยถูกต้องคือ: ข</strong><br>
+                            <em>เหตุผลประกอบ:</em> รายงานเพื่อพนักงานสอบสวนเป็นหลักฐานทางกระบวนการยุติธรรม ซึ่งผู้พิพากษาและอัยการต้องทำความเข้าใจ จึงจำเป็นต้องหลีกเลี่ยง Technical terms และเขียนหน่วยวัดภาษาไทยให้แจ่มแจ้งชัดเจนตามระเบียบของกองนิติเวชศาสตร์
+                        </div>
+                    </div>
+
+                    <!-- Question 3 -->
+                    <div class="quiz-card p-4 border border-emerald-100 rounded-xl bg-emerald-50/10">
+                        <span class="bg-emerald-200 text-emerald-800 font-bold text-xs px-2.5 py-1 rounded-md">ข้อที่ 3 - Blast Injury & Gun Fire</span>
+                        <p class="text-scale-body font-bold text-emerald-950 mt-2">เมื่อพบลักษณะบาดแผลที่ผิวหนังภายนอกมีลักษณะ ควันเขม่าเขียวเข้มจับแน่นผิว และพบลักษณะ Tattooing หรือสะเก็ดดินปืนฝังตัวในเนื้อ บ่งชี้ระยะยิงของอาวุธปืนนี้ประเภทใด?</p>
+                        
+                        <div class="mt-3 space-y-2">
+                            <button onclick="answerQuestion(3, 'a', false, this)" class="w-full text-left p-3 border border-emerald-100 rounded-lg bg-white text-scale-sm hover:bg-emerald-50">ก. ระยะจ่อยิงแนบสนิทผิวหนัง (Contact wound)</button>
+                            <button onclick="answerQuestion(3, 'b', true, this)" class="w-full text-left p-3 border border-emerald-100 rounded-lg bg-white text-scale-sm hover:bg-emerald-50">ข. ระยะยิงใกล้แต่ไม่ชิดผิวหนัง (Intermediate-range wound)</button>
+                            <button onclick="answerQuestion(3, 'c', false, this)" class="w-full text-left p-3 border border-emerald-100 rounded-lg bg-white text-scale-sm hover:bg-emerald-50">ค. ระยะไกลเกินควันเขม่าเดินทาง (Distant wound)</button>
+                            <button onclick="answerQuestion(3, 'd', false, this)" class="w-full text-left p-3 border border-emerald-100 rounded-lg bg-white text-scale-sm hover:bg-emerald-50">ง. ระยะประเมินไม่ได้เนื่องจากไม่ทราบขนาดกระบอกปืน</button>
+                        </div>
+                        <div id="q3-explanation" class="hidden mt-3 p-3 bg-emerald-50 border border-emerald-200 rounded-lg text-emerald-950 text-scale-sm">
+                            <strong>เฉลยถูกต้องคือ: ข</strong><br>
+                            <em>เหตุผลประกอบ:</em> เขม่าปืนและการพบลักษณะ Tattooing (เขม่าฝังลึกในชั้นหนังกำพร้า) จะเกิดได้ในระยะยิงที่ใกล้มิใช่ระยะไกล (Intermediate Range) โดยทั่วไปอยู่ที่ประมาณตั้งแต่ 1 เซนติเมตรขึ้นไปจนถึงไม่เกิน 60-90 เซนติเมตร
+                        </div>
+                    </div>
+
+                    <!-- Question 4 -->
+                    <div class="quiz-card p-4 border border-emerald-100 rounded-xl bg-emerald-50/10">
+                        <span class="bg-emerald-200 text-emerald-800 font-bold text-xs px-2.5 py-1 rounded-md">ข้อที่ 4 - Asphyxia</span>
+                        <p class="text-scale-body font-bold text-emerald-950 mt-2">ข้อบ่งชี้ทางนิติเวชศาสตร์หลักในที่เกิดเหตุข้อใดที่สามารถแยก "การเสียชีวิตจากการแขวนคอตายเอง (Hanging)" ออกจาก "การรัดคอฆาตกรรม (Strangulation)" ได้ชัดเจนที่สุด?</p>
+                        
+                        <div class="mt-3 space-y-2">
+                            <button onclick="answerQuestion(4, 'a', true, this)" class="w-full text-left p-3 border border-emerald-100 rounded-lg bg-white text-scale-sm hover:bg-emerald-50">ก. ลำดับทิศทางของรอยเชือกกดทับเป็นแนวเฉียงขึ้นและไม่ต่อเนื่องรอบคอ</button>
+                            <button onclick="answerQuestion(4, 'b', false, this)" class="w-full text-left p-3 border border-emerald-100 rounded-lg bg-white text-scale-sm hover:bg-emerald-50">ข. การพบบาดแผลถลอกจ้ำเลือดที่มือทั้งสองข้าง</button>
+                            <button onclick="answerQuestion(4, 'c', false, this)" class="w-full text-left p-3 border border-emerald-100 rounded-lg bg-white text-scale-sm hover:bg-emerald-50">ค. การพบกระดูกหน้าอกหรือกระดูกซี่โครงซี่ที่ 1 และ 2 หัก</button>
+                            <button onclick="answerQuestion(4, 'd', false, this)" class="w-full text-left p-3 border border-emerald-100 rounded-lg bg-white text-scale-sm hover:bg-emerald-50">ง. การพบ Tardieu spots ปริมาณหนาแน่นทั่วผิวหนังใบหน้า</button>
+                        </div>
+                        <div id="q4-explanation" class="hidden mt-3 p-3 bg-emerald-50 border border-emerald-200 rounded-lg text-emerald-950 text-scale-sm">
+                            <strong>เฉลยถูกต้องคือ: ก</strong><br>
+                            <em>เหตุผลประกอบ:</em> ในเคสการแขวนคอตายเอง (Hanging) ทิศทางรอยกดของปมเชือกมักเฉียงขึ้นไปหาจุดแขวนเสมอ และเป็นผลให้รอยกดของเชือกมักไม่สม่ำเสมอรอบคอและไม่มีเส้นพาดแนวขนานกับระดับไหล่แบบคดีบีบรัดคอโดยบุคคลอื่น
+                        </div>
+                    </div>
+
+                    <!-- Question 5 -->
+                    <div class="quiz-card p-4 border border-emerald-100 rounded-xl bg-emerald-50/10">
+                        <span class="bg-emerald-200 text-emerald-800 font-bold text-xs px-2.5 py-1 rounded-md">ข้อที่ 5 - Thermal Injury</span>
+                        <p class="text-scale-body font-bold text-emerald-950 mt-2">การพบปริมาณความเข้มข้นของ Carboxyhemoglobin (CO-Hb) ในกระแสเลือดของศพที่ตรวจชันสูตรพบลักษณะในที่เกิดไฟไหม้มีระดับสูงกว่าร้อยละ 50 บ่งบอกถึงสิ่งใด?</p>
+                        
+                        <div class="mt-3 space-y-2">
+                            <button onclick="answerQuestion(5, 'a', false, this)" class="w-full text-left p-3 border border-emerald-100 rounded-lg bg-white text-scale-sm hover:bg-emerald-50">ก. ศพถูกฆาตกรรมรัดคอแล้วจัดฉากวางเพลิงเผาทำลายหลักฐานภายหลัง</button>
+                            <button onclick="answerQuestion(5, 'b', true, this)" class="w-full text-left p-3 border border-emerald-100 rounded-lg bg-white text-scale-sm hover:bg-emerald-50">ข. ศพยังคงมีชีวิต หายใจ และสูดสำลักเอาควันก๊าซคาร์บอนมอนอกไซด์ขณะเกิดเพลิงไหม้</button>
+                            <button onclick="answerQuestion(5, 'c', false, this)" class="w-full text-left p-3 border border-emerald-100 rounded-lg bg-white text-scale-sm hover:bg-emerald-50">ค. ผิวหนังศพไหม้เกรียมเป็นผลกระแสไฟฟ้าทำปฏิกิริยากับเม็ดเลือดแดง</button>
+                            <button onclick="answerQuestion(5, 'd', false, this)" class="w-full text-left p-3 border border-emerald-100 rounded-lg bg-white text-scale-sm hover:bg-emerald-50">ง. ศพเสียชีวิตจากอาการใหลตายเฉียบพลันก่อนที่จะถูกไฟไหม้สะกดความร้อน</button>
+                        </div>
+                        <div id="q5-explanation" class="hidden mt-3 p-3 bg-emerald-50 border border-emerald-200 rounded-lg text-emerald-950 text-scale-sm">
+                            <strong>เฉลยถูกต้องคือ: ข</strong><br>
+                            <em>เหตุผลประกอบ:</em> คาร์บอนมอนอกไซด์จะเข้าไปจับตัวกับฮีโมโกลบินเป็น Carboxyhemoglobin ได้ก็ต่อเมื่อเหยื่อยังคงมีลมหายใจขณะเกิดเพลิงไหม้ จึงเป็นเครื่องพิสูจน์หลักฐานทางนิติเวชว่าเสียชีวิตขณะเกิดเหตุ (Alive during fire) ไม่ใช่ศพที่ถูกโยนอำพรางไฟ
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER CREDIT -->
+    <footer class="mt-16 text-center py-6 bg-emerald-900 text-emerald-100 text-scale-sm border-t border-emerald-800">
+        <p>© 2026 กองนิติเวชศาสตร์ โรงพยาบาลพุทธชินราชพิษณุโลก</p>
+        <p class="text-xs opacity-75 mt-1">พัฒนาขึ้นเพื่อสนับสนุนการเรียนการสอนนิสิตแพทย์โดยบูรณาการเนื้อหาตาม Table of Specification ล่าสุด</p>
+    </footer>
+
+    <!-- JAVASCRIPT APP CONTROLLERS -->
+    <script>
+        // Tab switching logic
+        function switchTab(tabId) {
+            // Hide all contents
+            const contents = document.querySelectorAll('.tab-content');
+            contents.forEach(content => content.classList.add('hidden'));
+            
+            // Show selected
+            const activeSec = document.getElementById('sec-' + tabId);
+            if (activeSec) activeSec.classList.remove('hidden');
+
+            // Set active class to navigation buttons
+            const buttons = document.querySelectorAll('.nav-tab-btn');
+            buttons.forEach(btn => btn.classList.remove('tab-active'));
+
+            const activeBtn = document.getElementById('btn-' + tabId);
+            if (activeBtn) activeBtn.classList.add('tab-active');
+            
+            // Scroll to top of content smooth
+            window.scrollTo({
+                top: 100,
+                behavior: 'smooth'
+            });
+        }
+
+        // Initialize first tab
+        switchTab('specification');
+
+        // Font scaling engine (Calculates rem * scaling)
+        let fontScale = 1.0;
+        function changeFontSize(change) {
+            fontScale += change;
+            // Boundaries
+            if (fontScale < 0.8) fontScale = 0.8;
+            if (fontScale > 1.4) fontScale = 1.4;
+
+            // Apply to document variable
+            document.documentElement.style.setProperty('--font-scale', fontScale);
+            
+            // Update display indicator
+            const percentage = Math.round(fontScale * 100);
+            document.getElementById('font-indicator').innerText = percentage + '%';
+        }
+
+        function resetFontSize() {
+            fontScale = 1.0;
+            document.documentElement.style.setProperty('--font-scale', 1.0);
+            document.getElementById('font-indicator').innerText = '100%';
+        }
+
+        // Accordion toggle function for TOS
+        function toggleAccordion(id) {
+            const elem = document.getElementById(id);
+            if (elem.classList.contains('hidden')) {
+                elem.classList.remove('hidden');
+            } else {
+                elem.classList.add('hidden');
+            }
+        }
+
+        // Check Form Logic for Death Certificate
+        function checkFormLogic() {
+            const a = document.getElementById('form-cause-a').value.trim();
+            const b = document.getElementById('form-cause-b').value.trim();
+            const c = document.getElementById('form-cause-c').value.trim();
+            const feedback = document.getElementById('form-logic-feedback');
+
+            if (!a || !b || !c) {
+                feedback.className = "p-4 rounded-lg bg-yellow-100 border border-yellow-200 text-yellow-900 mt-3 text-scale-sm font-medium";
+                feedback.innerHTML = "⚠️ กรุณากรอกข้อมูลจำลองให้ครบถ้วนทั้ง 3 ช่อง เพื่อทำกิจกรรมวิเคราะห์ความสัมพันธ์ความสัมพันธ์การตายแบบลำดับสาเหตุ";
+                feedback.classList.remove('hidden');
+                return;
+            }
+
+            // Logic matching test
+            feedback.className = "p-4 rounded-lg bg-emerald-100 border border-emerald-200 text-emerald-950 mt-3 text-scale-sm leading-relaxed";
+            feedback.innerHTML = `
+                <strong class="text-emerald-900 block mb-1">✅ ผลการวิเคราะห์โครงสร้าง ทร.4/1 จากโปรแกรม:</strong>
+                เรียงลำดับการร้อยความสอดคล้องตามหลักนิติเวชแพทย์:<br>
+                <em>"ผู้เสียชีวิตถึงแก่ความตายด้วย <strong>${a}</strong> อันเป็นผลสืบเนื่องมาจาก <strong>${b}</strong> ซึ่งเกิดจากกลไกบาดเจ็บภายนอกคือ <strong>${c}</strong>"</em><br>
+                <span class="text-xs text-emerald-800 block mt-2">💡 <strong>คำแนะนำแพทย์พี่เลี้ยง:</strong> ลำดับเหตุผลถูกต้อง การเขียนแบบนี้ทำให้พนักงานสอบสวนสามารถเชื่อมโยงพฤติกรรมในสำนวนคดีเพื่อฟ้องร้องฐานทำร้ายร่างกายหรือฆาตกรรมได้ชัดเจน</span>
+            `;
+            feedback.classList.remove('hidden');
+        }
+
+        // Report validation scanner (Checks forbidden terms in real-time)
+        function validateStudentReport() {
+            const text = document.getElementById('report-input').value.trim();
+            const outputBox = document.getElementById('validation-result');
+
+            if (!text) {
+                outputBox.className = "mt-4 p-4 rounded-xl border bg-yellow-50 border-yellow-200 text-yellow-900 text-scale-sm font-semibold";
+                outputBox.innerHTML = "⚠️ กรุณากรอกเนื้อหาหรือแบบร่างรายงานเพื่อสแกนด้วยเครื่องมือ";
+                outputBox.classList.remove('hidden');
+                return;
+            }
+
+            let errors = [];
+
+            // Scan Rules
+            if (/\b(Fx|FX|fx|Sdh|Sdh|SDH|Edh|EDH|GCS|gcs)\b/i.test(text)) {
+                errors.push("❌ <strong>ตรวจพบการใช้ตัวย่อทางการแพทย์:</strong> ห้ามใช้คำย่อ เช่น Fx (กระดูกหัก) หรือ SDH ในเอกสารศาลเด็ดขาด ให้ใช้คำเต็ม เช่น 'กระดูกหัก', 'มีเลือดออกใต้เยื่อหุ้มสมองชั้นหนา'");
+            }
+            if (/[a-zA-Z]/.test(text)) {
+                errors.push("❌ <strong>ตรวจพบการใช้ตัวอักษรภาษาอังกฤษ:</strong> ควรเปลี่ยนคำวิชาการทางคลินิกเป็นคำอธิบายภาษาไทยตามกฎหมาย เพื่อให้อัยการและศาลเข้าใจเนื้อหาได้โดยไม่ต้องพึ่งล่ามแพทย์");
+            }
+            if (/\d+\s*x\s*\d+/i.test(text)) {
+                errors.push("❌ <strong>ตรวจพบการใช้เครื่องหมาย x ย่อสัญกรณ์การคูณ:</strong> ห้ามใช้ตัวคูณ เช่น '2x3 เซนติเมตร' ในรายงานชันสูตรบาดแผล ให้เปลี่ยนเป็นสะกดคำเต็ม คือ 'ขนาดกว้าง 2 เซนติเมตร ยาว 3 เซนติเมตร'");
+            }
+            if (/ลบคำผิด|ลิควิด/i.test(text)) {
+                errors.push("❌ <strong>ตรวจพบการกล่าวถึงน้ำยาลบคำผิด:</strong> ห้ามใช้น้ำยาลบคำผิดในเอกสารราชการทางกฎหมาย หากต้องการแก้ไขคำให้ใช้ปากกาขีดฆ่าคำนั้นแล้วเซ็นชื่อกำกับ");
+            }
+
+            // Results Output
+            if (errors.length > 0) {
+                outputBox.className = "mt-4 p-4 rounded-xl border bg-red-50 border-red-200 text-red-950 text-scale-sm space-y-2";
+                let htmlContent = `<strong class="text-red-900 text-scale-lg block mb-1">🚨 ตรวจพบจุดที่เสี่ยงต่อการโดนหักคะแนน Rubric (${errors.length} ตำแหน่ง):</strong>`;
+                htmlContent += `<ul class="list-disc pl-5 space-y-1.5">`;
+                errors.forEach(err => {
+                    htmlContent += `<li>${err}</li>`;
+                });
+                htmlContent += `</ul>`;
+                htmlContent += `<p class="text-xs text-red-700 mt-2 font-medium">💡 กรุณาแก้ไขเนื้อหาของรายงานแล้วลองสแกนอีกครั้งเพื่อคะแนนส่งงานที่ดีที่สุดครับ</p>`;
+                outputBox.innerHTML = htmlContent;
+            } else {
+                outputBox.className = "mt-4 p-4 rounded-xl border bg-emerald-50 border-emerald-200 text-emerald-950 text-scale-sm";
+                outputBox.innerHTML = `
+                    <strong class="text-emerald-900 text-scale-lg block mb-1">🎉 ตรวจสอบผ่านเกณฑ์เบื้องต้น!</strong>
+                    ไม่พบคำย่อแพทย์ ไม่พบคูณสั้น ไม่พบภาษาอังกฤษแปลกปลอมในเนื้อหา นิสิตแพทย์สามารถใช้รูปแบบร่างนี้จัดเรียงเนื้อหาส่งงานได้ตามระเบียบกองนิติเวช
+                `;
+            }
+            outputBox.classList.remove('hidden');
+        }
+
+        // Quiz score tracker state
+        let answeredQuestions = {};
+        let score = 0;
+
+        function answerQuestion(qNum, option, isCorrect, btnElement) {
+            // Avoid multiple submits for same question
+            if (answeredQuestions[qNum]) return;
+            
+            answeredQuestions[qNum] = true;
+
+            // Highlight choice colors
+            const card = btnElement.parentElement;
+            const buttons = card.querySelectorAll('button');
+            
+            buttons.forEach(btn => {
+                btn.disabled = true;
+                btn.className = "w-full text-left p-3 border rounded-lg bg-gray-50 text-gray-400 text-scale-sm cursor-not-allowed";
+            });
+
+            if (isCorrect) {
+                btnElement.className = "w-full text-left p-3 border-2 border-emerald-500 rounded-lg bg-emerald-100 text-emerald-900 font-bold text-scale-sm";
+                score++;
+                document.getElementById('quiz-score').innerText = score;
+            } else {
+                btnElement.className = "w-full text-left p-3 border-2 border-red-500 rounded-lg bg-red-100 text-red-900 font-bold text-scale-sm";
+            }
+
+            // Show explanation
+            const expl = document.getElementById(`q1-explanation`);
+            const targetExpl = document.getElementById(`q${qNum}-explanation`);
+            if (targetExpl) {
+                targetExpl.classList.remove('hidden');
+            }
+        }
+    </script>
+</body>
+</html>
