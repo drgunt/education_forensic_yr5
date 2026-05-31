@@ -372,27 +372,16 @@
                 <h2 class="text-scale-h2 font-bold text-emerald-950 border-b pb-3 border-emerald-50 mb-4 flex items-center gap-2">
                     <span class="p-1.5 bg-emerald-100 rounded-lg text-emerald-800">✏️</span> เครื่องมือจำลองฝึกฝนกรอกเอกสาร ทร.4/1 ออนไลน์
                 </h2>
-                <p class="text-scale-body text-emerald-800 mb-4">ลองป้อนข้อมูลลงในช่องด้านล่างเพื่อประเมินความสอดคล้องตามหลักลำดับสาเหตุการตายทางนิติเวช (ICD-10):</p>
+                <p class="text-scale-body text-emerald-800 mb-4">เครื่องมือฝึกฝนออนไลน์สำหรับกรอกหนังสือรับรองการตาย (ทร.4/1) พร้อมการตรวจสอบเกณฑ์อัตโนมัติ:</p>
                 
-                <div class="space-y-4 p-4 bg-emerald-50/50 rounded-xl border border-emerald-100">
-                    <div>
-                        <label class="block text-scale-sm font-bold text-emerald-950 mb-1">เหตุการตายขั้นต้น (Direct Cause) - โรคหรือบาดแผลที่เป็นสาเหตุหลักโดยตรง (ช่อง a)</label>
-                        <input type="text" id="form-cause-a" placeholder="เช่น เลือดออกใต้เยื่อหุ้มสมองชั้นหนา (Subdural hemorrhage)" class="w-full p-2.5 border border-emerald-200 rounded-lg focus:ring-2 focus:ring-emerald-800 focus:outline-none text-scale-sm">
-                    </div>
-                    <div>
-                        <label class="block text-scale-sm font-bold text-emerald-950 mb-1">สืบเนื่องมาจาก (Antecedent Cause) - สาเหตุรองหรือโรคเดิมที่เป็นต้นกำเนิด (ช่อง b)</label>
-                        <input type="text" id="form-cause-b" placeholder="เช่น กะโหลกศีรษะแตกและสมองช้ำ" class="w-full p-2.5 border border-emerald-200 rounded-lg focus:ring-2 focus:ring-emerald-800 focus:outline-none text-scale-sm">
-                    </div>
-                    <div>
-                        <label class="block text-scale-sm font-bold text-emerald-950 mb-1">ปัจจัยเกื้อหนุนภายนอก (External Cause of Injury) - พฤติการณ์การบาดเจ็บรุนแรง (ช่อง c)</label>
-                        <input type="text" id="form-cause-c" placeholder="เช่น ถูกทำร้ายร่างกายโดยใช้ไม้ตีที่ศีรษะ" class="w-full p-2.5 border border-emerald-200 rounded-lg focus:ring-2 focus:ring-emerald-800 focus:outline-none text-scale-sm">
-                    </div>
-                    
-                    <button onclick="checkFormLogic()" class="w-full py-2.5 px-4 bg-emerald-800 text-white rounded-xl text-scale-sm font-bold hover:bg-emerald-900 transition-colors">
-                        🩺 ตรวจสอบตรรกะความสอดคล้องสาเหตุการตาย
-                    </button>
-
-                    <div id="form-logic-feedback" class="hidden p-4 rounded-lg text-scale-sm font-medium"></div>
+                <div class="relative w-full min-h-[800px] border-2 border-emerald-100 rounded-xl overflow-hidden bg-emerald-50">
+                    <iframe src="https://death-certificate-practice-671431182227.asia-southeast1.run.app/" 
+                            class="absolute top-0 left-0 w-full h-full" 
+                            frameborder="0" 
+                            allowfullscreen="true" 
+                            mozallowfullscreen="true" 
+                            webkitallowfullscreen="true">
+                    </iframe>
                 </div>
             </div>
 
